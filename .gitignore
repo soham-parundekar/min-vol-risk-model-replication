@@ -1,0 +1,38 @@
+# Downloaded and derived data is not committed. Everything under data/ is
+# rebuilt by scripts/01_build_data.py, it runs to about 350 MB, and several
+# sources do not permit redistribution. The per-source position is recorded in
+# references/source_register.csv.
+#
+# The leading slash is load-bearing. A bare `data/` pattern matches a directory
+# of that name at ANY depth, which silently excluded the whole of
+# src/minvol/data/ (universe, prices, fundamentals, splits, market cap and the
+# rest) from a commit and would have published a repository that cannot run.
+# Anchoring the pattern to the repository root is what restricts it to the real
+# data directory.
+/data/
+
+# Run logs, same anchoring for the same reason.
+/logs/
+
+# No negated exceptions here either. A `!/data/raw/.gitkeep` style rule forces
+# git to walk into the directory and stat all 1,282 files to work out what the
+# exception matches, which turns `git add` into a minutes-long operation over a
+# network mount. Paths.ensure() recreates the directories on first run, so no
+# placeholder files are needed.
+
+# Figures and tables ARE committed. They are under a megabyte together, the
+# report embeds the figures directly, and a reader browsing the repository
+# should see the results without running the pipeline first.
+
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+.venv/
+venv/
+.env
+
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

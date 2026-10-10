@@ -1,0 +1,174 @@
+% Academic and methodology sources for the USMV / SPLV replication study.
+% Metadata was checked against the source; where a field could not be verified
+% it is omitted rather than guessed. See source_register.csv for data sources,
+% retrieval instructions and redistribution status.
+
+@article{ledoit2004honey,
+  author  = {Ledoit, Olivier and Wolf, Michael},
+  title   = {Honey, {I} Shrunk the Sample Covariance Matrix},
+  journal = {Journal of Portfolio Management},
+  year    = {2004},
+  volume  = {30},
+  number  = {4},
+  pages   = {110--119},
+  note    = {REF-006. Constant-correlation shrinkage target and the analytic
+             shrinkage intensity used in src/minvol/risk/covariance.py. Not the
+             scaled-identity estimator of the authors' other 2004 paper, which
+             is what most library implementations provide.}
+}
+
+@article{bai2002determining,
+  author  = {Bai, Jushan and Ng, Serena},
+  title   = {Determining the Number of Factors in Approximate Factor Models},
+  journal = {Econometrica},
+  year    = {2002},
+  volume  = {70},
+  number  = {1},
+  pages   = {191--221},
+  doi     = {10.1111/1468-0262.00273},
+  note    = {REF-007. Information criteria used to choose the PCA factor count.}
+}
+
+@article{frazzini2014betting,
+  author  = {Frazzini, Andrea and Pedersen, Lasse Heje},
+  title   = {Betting Against Beta},
+  journal = {Journal of Financial Economics},
+  year    = {2014},
+  volume  = {111},
+  number  = {1},
+  pages   = {1--25},
+  note    = {REF-008. The leverage-constraint account of the low-volatility
+             effect. Citation as given by AQR in the dataset file.}
+}
+
+@article{fama2015five,
+  author  = {Fama, Eugene F. and French, Kenneth R.},
+  title   = {A Five-Factor Asset Pricing Model},
+  journal = {Journal of Financial Economics},
+  year    = {2015},
+  volume  = {116},
+  number  = {1},
+  pages   = {1--22},
+  note    = {REF-009. Base model for the attribution regressions.}
+}
+
+@article{markowitz1952portfolio,
+  author  = {Markowitz, Harry},
+  title   = {Portfolio Selection},
+  journal = {Journal of Finance},
+  year    = {1952},
+  volume  = {7},
+  note    = {REF-010. Cited as MSCI cites it in the methodology document that
+             defines the index being replicated. Issue and pages are not
+             asserted because the citing footnote does not give them and the
+             original was not checked.}
+}
+
+@techreport{msci2012minvol,
+  author      = {{MSCI Inc.}},
+  title       = {{MSCI} Minimum Volatility Indices Methodology},
+  institution = {MSCI Inc.},
+  year        = {2012},
+  month       = {1},
+  url         = {https://www.msci.com/eqb/methodology/meth_docs/MSCI_Minimum_Volatility_Methodology_Jan12.pdf},
+  urldate     = {2026-10-10},
+  note        = {REF-001. Primary source for the full USMV constraint set, the
+                 review calendar, the end-of-prior-month covariance dating and
+                 the Appendix III infeasibility ladder. Copyrighted; not
+                 redistributed with this repository.}
+}
+
+@techreport{msci2025minvoladvanced,
+  author      = {{MSCI Inc.}},
+  title       = {{MSCI} Minimum Volatility Advanced Indexes Methodology},
+  institution = {MSCI Inc.},
+  year        = {2025},
+  month       = {2},
+  url         = {https://www.msci.com/indexes/documents/methodology/3_MSCI_Minimum_Volatility_Advanced_Indexes_Methodology_20250203.pdf},
+  urldate     = {2026-10-10},
+  note        = {REF-002. Used to confirm the constraint set is unchanged since
+                 2012 and as the source for the BETA-and-RESVOL reading of the
+                 style exemption. Copyrighted; not redistributed.}
+}
+
+@misc{ishares2011usmv497k,
+  author       = {{iShares Trust}},
+  title        = {{iShares MSCI USA} Minimum Volatility Index Fund Summary
+                  Prospectus (Form 497K)},
+  howpublished = {U.S. Securities and Exchange Commission, EDGAR},
+  year         = {2011},
+  month        = {10},
+  url          = {https://www.sec.gov/Archives/edgar/data/1100663/000119312511266729/d240179d497k.htm},
+  urldate      = {2026-10-10},
+  note         = {REF-003. CIK 0001100663, accession 0001193125-11-266729.
+                  Filed 2011-10-07, eleven days before USMV began trading.
+                  Preserved under references/sec_filings/.}
+}
+
+@misc{invesco2024splv497k,
+  author       = {{Invesco Exchange-Traded Fund Trust II}},
+  title        = {Invesco {S\&P} 500 Low Volatility {ETF} Summary Prospectus
+                  (Form 497K)},
+  howpublished = {U.S. Securities and Exchange Commission, EDGAR},
+  year         = {2024},
+  month        = {12},
+  url          = {https://www.sec.gov/Archives/edgar/data/1378872/000119312524282757/d861761d497k.htm},
+  urldate      = {2026-10-10},
+  note         = {REF-004. CIK 0001378872, accession 0001193125-24-282757.
+                  Primary source for the SPLV selection and weighting rules.
+                  Preserved under references/sec_filings/.}
+}
+
+@misc{spdji_lowvol_methodology,
+  author       = {{S\&P Dow Jones Indices LLC}},
+  title        = {{S\&P} 500 Low Volatility Index Methodology},
+  howpublished = {S\&P Dow Jones Indices},
+  url          = {https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-low-volatility-indices.pdf},
+  urldate      = {2026-10-10},
+  note         = {REF-005. Source of the quarterly rebalance calendar and
+                  third-Friday effective date. The URL returned HTTP 403 from
+                  the run environment, so the document was not retrieved and
+                  the rebalance timing is flagged as unverified in the report.
+                  Selection and weighting rules were confirmed independently
+                  from REF-004.}
+}
+
+@misc{frenchdatalibrary,
+  author       = {French, Kenneth R.},
+  title        = {Fama/{F}rench Data Library},
+  howpublished = {Tuck School of Business, Dartmouth College},
+  url          = {https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html},
+  urldate      = {2026-10-10},
+  note         = {REF-011 and REF-015. Daily five factors, daily momentum, the
+                  risk-free rate, and the Siccodes12 industry definitions. The
+                  factor vintage used was built from the 202608 CRSP database.}
+}
+
+@misc{aqrbab,
+  author       = {{AQR Capital Management LLC}},
+  title        = {Betting Against Beta: Equity Factors, Daily},
+  howpublished = {AQR Data Sets},
+  url          = {https://www.aqr.com/Insights/Datasets/Betting-Against-Beta-Equity-Factors-Daily},
+  urldate      = {2026-10-10},
+  note         = {REF-012. USA column. Series ends 2026-07-31 in the vintage
+                  used, which bounds every regression including BAB.}
+}
+
+@misc{secedgarapi,
+  author       = {{U.S. Securities and Exchange Commission}},
+  title        = {{EDGAR} Application Programming Interfaces},
+  url          = {https://www.sec.gov/search-filings/edgar-application-programming-interfaces},
+  urldate      = {2026-10-10},
+  note         = {REF-013 and REF-014. XBRL company-facts for point-in-time
+                  fundamentals and submissions for SIC codes.}
+}
+
+@misc{fja05680sp500,
+  author       = {{fja05680}},
+  title        = {{S\&P} 500 Historical Components and Changes},
+  howpublished = {GitHub repository},
+  url          = {https://github.com/fja05680/sp500},
+  urldate      = {2026-10-10},
+  note         = {REF-018. Point-in-time membership panel. The loader records
+                  the commit hash so a run is reproducible against a vintage.}
+}

@@ -1,0 +1,26 @@
+# Lower bounds rather than pins. The analysis does not depend on anything
+# version-specific, and pinning exact builds makes the repository harder to run
+# a year from now for no gain in reproducibility: what actually fixes the
+# results is the data vintage, which config/params.yaml and the source register
+# record.
+#
+# Two notes from running this. pandas 3 changed the default datetime resolution
+# of a parquet round-trip, so src/minvol/data/marketcap.py measures filing age
+# with timedelta arithmetic rather than integer nanoseconds. And cvxpy needs at
+# least one conic solver present; CLARABEL ships with it and OSQP and SCS are
+# used as fallbacks on the handful of rebalances that are hard to solve.
+
+numpy>=1.26
+pandas>=2.1
+pyarrow>=14.0
+scipy>=1.11
+scikit-learn>=1.3
+statsmodels>=0.14
+cvxpy>=1.4
+matplotlib>=3.8
+requests>=2.31
+PyYAML>=6.0
+yfinance>=0.2.40
+lxml>=4.9
+openpyxl>=3.1
+pytest>=7.4

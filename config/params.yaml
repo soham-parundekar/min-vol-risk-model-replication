@@ -1,0 +1,352 @@
+# Parameters for the USMV / SPLV replication study.
+#
+# Every number a module needs lives here rather than in the code, so that a
+# reader can see the whole specification in one place and so that robustness
+# runs can vary one input without editing a module. Dates are ISO-8601.
+#
+# Where a value comes from a published index methodology, the comment names the
+# document. Where it is our own modelling choice, the comment says so and gives
+# the reasoning.
+
+sample:
+  # Prices start well before the first exposure date because a 252-day beta and
+  # a 12-1 momentum signal both need roughly a year of history before they
+  # produce their first value.
+  price_start: "2008-01-01"
+  price_end: "2026-09-30"
+
+  # First weekly cross-section we attempt to build exposures for.
+  #
+  # Not earlier, and the reason is XBRL coverage rather than price history.
+  # Mandatory XBRL tagging phased in between 2009 and 2011, so point-in-time
+  # share counts exist for only about 70% of index members in late 2009. A
+  # cap-weighted parent index rebuilt from 70% of its constituents tracked SPY
+  # at 5.2% error over the second half of 2009 against 1.5% from 2010 onward,
+  # and every beta in the study is measured against that index. Starting in
+  # 2010 costs six months of sample and removes a stretch where the benchmark
+  # itself is unreliable.
+  exposure_start: "2010-01-01"
+
+  # The factor covariance matrix is 19x19 (market + 12 industries + 6 styles)
+  # under the default industry scheme, so we refuse to estimate it until there
+  # are enough weekly factor returns for the estimate to mean anything. 104
+  # weeks is two years, which puts the first usable risk model in mid-2011 and
+  # comfortably ahead of USMV's first replicated rebalance in November 2011.
+  min_weeks_for_covariance: 104
+
+  # Weekly observation day. Friday-to-Friday returns, with the last available
+  # trading day used when a Friday is a market holiday.
+  weekly_day: "FRI"
+
+universe:
+  # The S&P 500 is a proxy for MSCI's parent index (the MSCI USA Investable
+  # Market Index), not the same thing. MSCI's parent is far broader, roughly
+  # 2,500 names covering large, mid and small cap. This substitution is the
+  # single largest known source of replication error for USMV and is reported
+  # as such rather than buried.
+  proxy_note: "S&P 500 stands in for the MSCI USA IMI parent index"
+  membership_source: "fja05680/sp500 historical components panel"
+  membership_crosscheck: "Wikipedia List of S&P 500 companies, current constituents table"
+
+  # Names must have this many trailing daily observations on an exposure date to
+  # enter the cross-section. Anything thinner cannot support a 252-day beta.
+  min_history_days: 252
+
+  # Dollar volume below this on an exposure date drops the name for that week.
+  # Set to zero to disable; the S&P 500 has no genuinely illiquid members, so
+  # this guards against data errors more than against real illiquidity.
+  min_adv_usd: 0
+
+industries:
+  # Fama-French 12-industry groupings, assigned from the SIC code on each
+  # issuer's most recent EDGAR submission.
+  #
+  # Two honest caveats. First, SIC is a coarser and much older scheme than the
+  # GICS classification MSCI actually uses, so our industry factors and our
+  # "sector" constraint are both approximations. Second, EDGAR reports one
+  # current SIC per filer rather than a history, so a company that changed
+  # business materially carries its present-day code backwards. Both are
+  # recorded in the limitations section of the report.
+  scheme: "ff12"
+  definitions_source: "Ken French Data Library, Siccodes12.zip"
+  # Industries with fewer than this many names in a given week are merged into
+  # the catch-all group for that week, because a cross-sectional regression
+  # cannot identify an industry return from three stocks.
+  min_names_per_industry: 5
+
+exposures:
+  # Winsorisation happens on the raw descriptor, before standardisation.
+  winsor_lower_pct: 1.0
+  winsor_upper_pct: 99.0
+
+  # Blume-style shrinkage of the raw 252-day regression beta toward one.
+  # beta_shrunk = a * beta_raw + b, with a + b = 1 so that the market portfolio
+  # keeps a beta of one.
+  beta_window_days: 252
+  beta_shrink_slope: 0.67
+  beta_shrink_intercept: 0.33
+
+  # Residual volatility is the standard deviation of the residual from that
+  # same beta regression, which is what a risk model means by specific or
+  # residual volatility. Raw total volatility is a different quantity and is
+  # not used as a style descriptor.
+  resid_vol_window_days: 252
+
+  # 12-1 momentum: cumulative return over twelve months, skipping the most
+  # recent month, which is the standard construction that avoids the one-month
+  # reversal effect.
+  momentum_lookback_days: 252
+  momentum_skip_days: 21
+
+  # Trailing quarter of average daily dollar volume, logged.
+  liquidity_window_days: 63
+
+  # Order matters only for reporting; the volatility factor is named here
+  # because the USMV constraint set deliberately leaves it unconstrained.
+  style_factors: ["size", "beta", "resid_vol", "momentum", "book_to_price", "liquidity"]
+
+  # Which style factors the USMV optimiser is allowed to tilt freely.
+  #
+  # The January 2012 methodology exempts "the Barra Volatility risk index
+  # factor", singular, which in the USE3-era factor set was one combined
+  # volatility index. The February 2025 document names two, "BETA and RESVOL",
+  # because USE4 split them apart. So the same sentence means different things
+  # depending on which risk model is behind it.
+  #
+  # The base case follows the 2012 reading and frees residual volatility only,
+  # which keeps beta inside the 0.25 band like every other style. The variant
+  # frees both and is run as a robustness check, because a minimum-variance
+  # optimiser held to the parent's beta is being denied the most direct route
+  # to low volatility there is. Which of the two tracks the real ETF better is
+  # an empirical question the report answers rather than assumes.
+  unconstrained_styles: ["resid_vol"]
+  unconstrained_styles_variant: ["beta", "resid_vol"]
+
+factor_returns:
+  # Cross-sectional weighted least squares, weights proportional to the square
+  # root of market cap. This is the Barra convention: it sits between an
+  # equal-weighted fit (dominated by small, noisy names) and a cap-weighted fit
+  # (effectively a handful of mega caps).
+  weight: "sqrt_mcap"
+
+  # The industry dummies sum to the market factor for any stock, so the system
+  # as written is rank deficient by one. We impose cap-weighted industry
+  # returns summing to zero by reparametrising the design matrix rather than
+  # dropping a column, which preserves the interpretation of the market factor
+  # as the cap-weighted market return.
+  identification: "cap_weighted_industry_sum_zero"
+
+covariance:
+  # Weekly observations, so half-lives are in weeks. Barra's USE4 short-horizon
+  # model uses a 84-day half-life for factor volatilities and 252 days for
+  # correlations; dividing by five trading days per week gives roughly 17 and
+  # 50. Volatilities get the shorter memory because they move with regime and
+  # need to react; correlations are more stable and a longer window buys
+  # precision without much staleness cost.
+  factor_vol_halflife_weeks: 17
+  factor_corr_halflife_weeks: 50
+  specific_vol_halflife_weeks: 26
+
+  # Weeks of history fed to the EWMA. Weights past this point are negligible.
+  ewma_window_weeks: 260
+
+  # Specific variances are shrunk toward the mean specific variance of the
+  # stock's market-cap decile. A newly listed or thinly traded name has a very
+  # noisy idiosyncratic variance estimate, and pulling it toward its peer group
+  # stops the optimiser from loading on an estimation artefact.
+  specific_shrink_intensity: 0.30
+  specific_cap_deciles: 10
+
+  # Window for the three non-structural estimators. All four run on weekly
+  # returns so the horse race compares like with like; 156 weeks is three
+  # years, which is long enough to be a fair test and short enough to stay
+  # responsive. Note that with roughly 500 names and 156 observations the
+  # sample covariance is singular by construction. That is not a bug in the
+  # baseline, it is the baseline's whole problem, and the results report it.
+  sample_window_weeks: 156
+
+  # Ledoit-Wolf (2004, JPM) shrinks toward a constant-correlation target, not
+  # toward scaled identity. The shrinkage intensity is computed analytically
+  # from the data; set a number here only to override it for a robustness run.
+  ledoit_wolf_target: "constant_correlation"
+  ledoit_wolf_intensity: null
+
+  # PCA factor count chosen by Bai-Ng information criteria rather than a round
+  # number. kmax bounds the search.
+  pca_criterion: "ICp2"
+  pca_kmax: 20
+
+bias_tests:
+  # Realised return in week t divided by the risk forecast made with data
+  # through week t-1. Using the week-t forecast would be circular and would
+  # flatter the model.
+  rolling_window_weeks: 52
+  portfolio_types: ["factor_mimicking", "random", "min_variance"]
+  n_random_portfolios: 100
+  random_seed: 20260301
+
+usmv:
+  # Constraints transcribed from the MSCI Minimum Volatility Indexes
+  # Methodology. See references/source_register.csv for the version and the
+  # date it was retrieved.
+  rebalance_months: [5, 11]
+  rebalance_rule: "last_business_day"
+
+  # Per-security cap is the lower of 1.5% and 20x the parent index weight.
+  max_weight_abs: 0.015
+  max_weight_parent_multiple: 20.0
+
+  # A holding is either exactly zero or at least 5bp. There is no continuum in
+  # between, which is what makes the problem mixed-integer.
+  min_holding: 0.0005
+
+  # Optimised sector weight stays within 5 percentage points of the parent
+  # index sector weight.
+  sector_band: 0.05
+
+  # Optimised exposure to each style factor stays within 0.25 standard
+  # deviations of the parent exposure. The volatility factor is exempt, which
+  # is the entire point of the index.
+  style_band: 0.25
+
+  # One-way turnover, that is half the sum of absolute weight changes.
+  turnover_cap: 0.10
+
+  # The 5bp floor is handled by solving the relaxed quadratic program, dropping
+  # whatever falls below the floor, and re-solving on the survivors until no
+  # holding violates it. Real index providers use the same kind of approximation.
+  semicontinuous_max_passes: 15
+
+  # The covariance matrix is dated to the end of the month *before* the review,
+  # not to the rebalance date. MSCI states this directly: the May review uses
+  # the end-of-April matrix and the November review the end-of-October one.
+  # Following it costs a little staleness and removes a month of hindsight the
+  # real index never had.
+  covariance_lag_months: 1
+
+  # Infeasibility handling, transcribed from Appendix III of the methodology
+  # document rather than invented. MSCI relaxes turnover first, in five-point
+  # steps to a ceiling of 30%, then walks the minimum holding down a basis
+  # point at a time to 0.01%, and only then loosens the weight cap and the
+  # sector band together.
+  #
+  # Two things this says that an intuitive ladder would get wrong. The style
+  # band is never relaxed at any stage, so a portfolio always stays within 0.25
+  # standard deviations of the parent on every constrained style. And when the
+  # whole sequence fails, the index is not rebalanced at all that review rather
+  # than rebalanced on loosened terms, which is reproduced here by carrying the
+  # previous weights forward.
+  relaxation:
+    turnover_steps: [0.15, 0.20, 0.25, 0.30]
+    min_holding_steps: [0.0004, 0.0003, 0.0002, 0.0001]
+    cap_sector_steps:
+      - {max_weight: 0.03, sector_band: 0.050}
+      - {max_weight: 0.03, sector_band: 0.075}
+      - {max_weight: 0.05, sector_band: 0.050}
+      - {max_weight: 0.05, sector_band: 0.075}
+
+splv:
+  # S&P 500 Low Volatility Index rules. Deliberately simple: this is the
+  # comparison, not the hard part.
+  n_holdings: 100
+  vol_window_days: 252
+  rebalance_months: [2, 5, 8, 11]
+  rebalance_rule: "third_friday"
+  weighting: "inverse_volatility"
+
+evaluation:
+  # USMV listed 2011-10-18, SPLV 2011-05-05. Replica tracking is reported from
+  # each fund's first replicated rebalance after its own inception, and again
+  # over a window common to both.
+  usmv_inception: "2011-10-18"
+  splv_inception: "2011-05-05"
+
+  # The two replicas cannot start on the same day, and the reason is itself a
+  # finding. SPLV needs one trailing volatility number per stock, so it can be
+  # replicated from its first quarterly rebalance after launch in 2011. USMV
+  # needs a fitted factor covariance, which needs two years of weekly factor
+  # returns, which given the 2010 exposure start puts its first rebalance in
+  # May 2012. A heuristic can be run the week you think of it; an optimiser
+  # cannot.
+  #
+  # Tables are reported from each replica's own first rebalance and again over
+  # this common window, so the comparison between them is never confounded by
+  # the two covering different periods.
+  common_start: "2012-05-31"
+
+  trading_days_per_year: 252
+  weeks_per_year: 52
+
+  # One-way cost applied to turnover at each rebalance, in basis points. Large
+  # cap US equity is cheap to trade; 5bp is a fair round number for this kind
+  # of name and the results are reported gross and net.
+  transaction_cost_bps: 5.0
+
+  benchmark_ticker: "SPY"
+  replication_targets: ["USMV", "SPLV"]
+
+fundamentals:
+  # Filers sometimes tag a share count with the wrong magnitude, and EDGAR
+  # serves the error through unchanged. Yum Brands reported 3.67e14 shares on
+  # its October 2016 10-Q against an actual count near 3.5e8; Garmin reported
+  # 1.98e11 the same month. Left alone, a single such fact hands one stock a
+  # market cap larger than world GDP and the cap-weighted parent index becomes
+  # that stock.
+  #
+  # The filter compares each share fact against a rolling median of its
+  # neighbours, on a split-adjusted basis so that genuine split jumps do not
+  # trip it. Real share counts move by a few percent a quarter, so a factor of
+  # five in either direction is far outside anything a buyback or an issuance
+  # produces, while still being loose enough not to touch legitimate data.
+  share_outlier_window: 9
+  share_outlier_factor: 5.0
+
+  # The neighbour test above catches a single mistyped fact. It cannot catch a
+  # scale error that repeats, and those happen: AIG tagged 1.35e14 shares
+  # across every fact of its Q2 2009 filing against an actual count near
+  # 1.35e9, Simon Property reported 2.93e11 where the truth was 2.93e8, and
+  # Berkshire 1.65e12 against 1.65e6. Every neighbour agrees, so the median
+  # moves with the error and nothing looks out of place.
+  #
+  # What does look out of place is the resulting market cap. A second check
+  # therefore runs on the finished panel and compares each name against the
+  # median market cap of that day's cross-section. The widest this ratio ever
+  # legitimately gets is Apple near its peak at roughly 100x the median, so a
+  # ceiling of 500x leaves a wide margin while still catching errors that are
+  # off by a thousand or more. The floor removes the mirror-image case.
+  mcap_median_ratio_high: 500.0
+  mcap_median_ratio_low: 0.0002
+
+  # Companies where the generic EDGAR route cannot produce a consolidated share
+  # count, with the reason recorded. These are deliberately few and each one is
+  # checkable against a named source.
+  extra_ciks:
+    # EDGAR's ticker file points XOM at ExxonMobil Holdings Corp (CIK 2115436),
+    # a successor registrant with a handful of filings. Seventeen years of
+    # history sit under the predecessor, Exxon Mobil Corp.
+    XOM: [34088]
+
+  # A market cap is a share count times a price, and a share count has a shelf
+  # life. Past this many days since the filing that produced it, the number is
+  # treated as unavailable rather than carried forward indefinitely.
+  #
+  # 450 days covers an annual filer plus a late season without complaint, so it
+  # does not touch normal reporting. What it does catch is filers whose
+  # consolidated share count disappears from EDGAR altogether. Berkshire is the
+  # case that motivated the rule: its last consolidated Class A equivalent count
+  # is from 2015, because every later share figure is tagged with a class
+  # dimension that the company-facts API does not return. Carrying a 2015 count
+  # into 2024 would miss nine years of buybacks and quietly misweight the
+  # largest financial in the index, so BRK.B drops out of the cross-section
+  # instead. The weight this forgoes is reported in the data-quality section
+  # rather than absorbed silently.
+  max_share_staleness_days: 450
+
+data_sources:
+  sec_user_agent: "Soham Parundekar MFE research parundekarsoham@gmail.com"
+  sec_rate_limit_per_sec: 8
+  fred_series: ["DGS10"]
+  ken_french_datasets:
+    - "F-F_Research_Data_5_Factors_2x3_daily"
+    - "F-F_Momentum_Factor_daily"
+    - "Siccodes12"
