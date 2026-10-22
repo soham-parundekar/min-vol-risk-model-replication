@@ -1,0 +1,17 @@
+\begin{table}[tbp]
+\caption{The four covariance estimators under an identical constraint set.}
+\label{tab:horserace}
+\centering\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{lrrrrrrr}
+\toprule
+Estimator & Realised vol (\%) & Pred./real. & Bias $b$ & Turnover (\%) & Holdings & Loosened & No trade\\
+\midrule
+Structural factor model & 15.73 & 0.890 & 1.078 & 12.84 & 109 & 2 & 0\\
+Sample & 15.56 & 0.878 & 1.090 & 12.87 & 82 & 6 & 1\\
+Ledoit--Wolf & 15.49 & 0.897 & 1.081 & 13.85 & 81 & 5 & 0\\
+PCA, Bai--Ng & 15.49 & 0.864 & 1.104 & 14.07 & 84 & 7 & 0\\
+\bottomrule
+\end{tabular}
+\notetext{Each estimator is run through the same constrained optimiser on the same rebalance calendar, so the rows differ only in $\Sigma$. The four realised volatilities span 25 basis points. Pred./real. is the ratio of mean predicted to realised annualised volatility, and bias $b$ is the standard deviation of realised return divided by the previous period's predicted standard deviation, computed on the minimum-variance portfolio over 748 observations. The two measure calibration differently and are not interchangeable: $b$ carries a well-specified band of [0.948, 1.052], and all four estimators sit above it. Turnover is the mean one-way figure per rebalance. Loosened counts the rebalances of 29 at which the published ladder put a weaker bound in force, and No trade those at which the ladder was exhausted without reaching a feasible book, so the previous weights were carried forward unchanged. The turnover cap is what binds in almost every case; the sector band was never the bound that had to be loosened.}
+\end{table}

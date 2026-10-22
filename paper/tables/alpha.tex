@@ -1,0 +1,19 @@
+\begin{table}[tbp]
+\caption{Six-factor alphas before and after the betting-against-beta factor.}
+\label{tab:alpha}
+\centering\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{lrrrrrr}
+\toprule
+Portfolio & $\alpha$ (\%) & $t$ & $\alpha$+BAB (\%) & $t$ & $\beta_{\rm BAB}$ & $t$\\
+\midrule
+USMV, the fund & -0.17 & -0.10 & -1.96 & -1.45 & 0.309 & 12.2\\
+USMV replica, structural & -0.07 & -0.09 & -0.54 & -0.71 & 0.099 & 10.3\\
+USMV replica, beta exempt & 0.34 & 0.28 & -0.84 & -0.80 & 0.241 & 13.6\\
+\addlinespace
+SPLV, the fund & -1.19 & -0.56 & -3.35 & -1.95 & 0.472 & 14.0\\
+SPLV replica & -0.48 & -0.24 & -2.50 & -1.51 & 0.448 & 14.0\\
+\bottomrule
+\end{tabular}
+\notetext{Daily excess returns regressed on the Fama--French five factors plus momentum, then re-run with the betting-against-beta factor added. Annualised intercepts, with Newey--West standard errors at 8 lags. The two blocks end on different dates because the factor vintages do: the six-factor window runs 2011-05-06 to 2026-08-31 and the seven-factor window to 2026-07-31, so the columns are not a paired test on an identical sample. No intercept reaches significance at the five per cent level in either block, though the largest, the SPLV fund's own at $t=-1.95$, falls only just short at $p=0.051$ and would clear a ten per cent threshold. Every betting-against-beta loading is significant by a wide margin, which is why the paper reads the pattern as absorption rather than as an absence of exposure.}
+\end{table}

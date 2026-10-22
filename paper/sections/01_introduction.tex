@@ -1,0 +1,88 @@
+\section{Introduction}
+\label{sec:intro}
+Two of the largest low-volatility equity funds are built on opposite
+philosophies. One tracks an index defined by a constrained quadratic programme
+over a commercial multi-factor risk model. The other tracks an index defined by
+two sentences: take the hundred least volatile members of the parent, weight
+them by the inverse of their volatility. Both publish their rules. Only one of
+them publishes rules a reader can act on.
+
+That asymmetry is the subject of this paper. A rank-and-weight rule is complete
+in the sense that two people implementing it from the document will produce the
+same portfolio. A constrained optimisation is not, because the constraints are
+written in the vocabulary of the provider's own risk model. The weight cap,
+the sector band and the turnover limit survive translation. The style-factor
+band does not: it is stated relative to standardised exposures to factors the
+provider names but does not define, and a replicator with a different factor
+set has to decide what those names map onto. The decision is invisible in the
+methodology document and consequential in the result.
+
+We quantify how consequential. Using a weekly factor risk model built entirely
+from free data, we rebuild both indices over the funds' own lifetimes and
+measure what each replication achieves. The heuristic index tracks at 1.62\%
+annualised tracking error with a correlation of 0.9939, which is close enough
+that the remaining difference is mostly the parent-universe proxy. The
+optimised index tracks at 5.83\%. Closing that gap is where the paper's content
+lies, and the usual suspect turns out to be the wrong one.
+
+The usual suspect is the covariance matrix. If a commercial risk model is the
+thing a free-data replication cannot reproduce, then a better covariance
+estimate should narrow the gap, and the literature offers a well-stocked menu
+of them. We run four: the sample matrix, a two-half-life structural factor
+model in the Barra idiom, constant-correlation shrinkage after
+\citet{ledoit2003improved}, and a principal-component model whose factor count
+is chosen by the \citet{bai2002determining} criteria rather than assumed. Under
+an identical constraint set they produce realised volatilities 25 basis points
+apart. That is the ordering \citet{dom2025beyond} report for constrained
+portfolios in general, and \citet{jagannathan2003risk} supply the reason:
+binding weight constraints act as a form of shrinkage, so a portfolio that is
+already constrained has less to gain from a better estimate of $\Sig$. Our
+contribution on this point is a confirmation in a specific published
+constraint set, not a new result.
+
+The specification choice is worth far more. The methodology exempts one
+proprietary volatility factor from the style bands, which is the entire
+mechanism by which a minimum-volatility index is permitted to be a
+low-volatility index. A public-data model has two candidates for what that
+factor names, beta and residual volatility, and the document that governs the
+index in question does not say which. Exempting residual volatility alone gives
+5.83\%. Exempting beta as well gives 3.73\%, with replica volatility of 13.97\%
+against the fund's 13.45\% and a beta to the fund of 1.001. One sentence in a
+constraint document, read two defensible ways, moves tracking error by 2.10
+percentage points, roughly an order of magnitude more than the choice among
+four covariance estimators moved realised volatility.
+
+We also report what the constraints buy, since the comparison invites the
+question of whether the optimiser earns its complexity. On realised volatility
+it does not: over this sample the optimised replicas are more volatile than the
+heuristic one, not less. What the constraints deliver is control over where the
+risk sits. The sector band holds the largest active industry weight near five
+per cent, where the heuristic's averages 40.7\% and reaches 47.6\%, because a
+rule that ranks on volatility alone will concentrate wherever the quietest
+industry happens to be. Neither index produces a six-factor alpha significant
+at the five per cent level, and betting-against-beta loadings between 8.7 and
+14.0 absorb what intercept there is, which is consistent with the
+leverage-constraint account of \citet{frazzini2014betting} and does not
+distinguish it from the benchmarking account of \citet{baker2011benchmarks}.
+
+Three boundaries on all of this. The parent universe is a proxy: the optimiser
+works over the S\&P 500 where the real index uses a broader one, and that
+substitution is the largest single contributor to the optimised tracking error
+and cannot be repaired by anything else in the pipeline. The ordering between
+specification and estimation is measured on one index pair over one sample
+period, so it is a demonstration that the ordering can be this large, not a
+claim that it is this large in general. And the minimum-holding rule makes the
+programme mixed-integer; we handle it with the drop-and-resolve heuristic that
+index providers themselves describe, and we do not measure the gap to an exact
+solve. Section~\ref{sec:limits} sets these out in full.
+
+Section~\ref{sec:rules} states both index rules from their primary documents and
+identifies precisely what the optimised one leaves open.
+Section~\ref{sec:model} builds the risk model and Section~\ref{sec:data} the
+data behind it, including the three ways free price and fundamental data will
+mislead a replication that does not defend against them.
+Section~\ref{sec:design} gives the replication design.
+Sections~\ref{sec:repro} to \ref{sec:anomaly} report what is reproducible,
+whether the estimator matters, what the constraints buy, and whether any of it
+is an anomaly. Section~\ref{sec:limits} and Section~\ref{sec:conclusion}
+interpret and conclude.

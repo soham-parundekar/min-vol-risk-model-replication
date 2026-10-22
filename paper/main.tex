@@ -1,0 +1,123 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm}
+\usepackage{newtxtext,newtxmath}
+\usepackage{microtype}
+\usepackage{graphicx,booktabs,tabularx,array,multirow}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{setspace}
+\usepackage[round,authoryear]{natbib}
+% Deliberate departure from the template this paper's formatting follows. The
+% template leaves the author-year separator empty, giving "(MSCI Inc. 2012)".
+% APA requires a comma there, so the fifth argument is set rather than left
+% blank. Every other punctuation choice is the template's.
+\bibpunct{(}{)}{,}{a}{,}{,}
+
+\providecommand{\SohamLocation}{\textit{India}}
+
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{placeins}
+\usepackage{etoolbox}
+\hypersetup{%
+  pdftitle={Specification, Not Estimation},
+  pdfauthor={Soham Abhay Parundekar},
+  pdfsubject={Replicating a constrained minimum-volatility index with a
+              public-data factor risk model},
+  pdfkeywords={minimum volatility, index replication, factor risk model,
+               covariance estimation, portfolio constraints}}
+\setstretch{1.06}
+\setlength{\parindent}{1em}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\clubpenalty=10000
+\widowpenalty=10000
+\setlength{\textfloatsep}{13pt plus 3pt minus 3pt}
+\setlength{\floatsep}{11pt plus 2pt minus 2pt}
+\captionsetup{font=small,labelfont=bf,labelsep=period,justification=raggedright,singlelinecheck=false,skip=7pt}
+\setcounter{topnumber}{2}
+\setcounter{totalnumber}{3}
+\renewcommand{\topfraction}{0.90}
+\renewcommand{\textfraction}{0.08}
+\renewcommand{\floatpagefraction}{0.80}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\footnotesize Specification, not estimation}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.25pt}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\ind}{\mathbf{1}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\notetext}[1]{\vspace{4pt}\par\noindent{\footnotesize\raggedright #1\par}}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+\renewcommand{\arraystretch}{1.12}
+
+% Shorthands for the objects compared throughout. Defined once so a change of
+% notation cannot drift between sections.
+\newcommand{\wvec}{w}                  % optimised index weights
+\newcommand{\bvec}{b}                  % parent index weights
+\newcommand{\Sig}{\Sigma}              % asset covariance
+\newcommand{\Xsty}{X^{\mathrm{sty}}}   % standardised style exposures
+\newcommand{\Xind}{X^{\mathrm{ind}}}   % industry membership dummies
+
+\begin{document}
+
+\thispagestyle{plain}
+\begin{center}
+{\LARGE\bfseries Specification, not estimation\par}
+\vspace{7pt}
+{\large Replicating a constrained minimum-volatility index with a public-data
+factor risk model\par}
+\vspace{14pt}
+
+\begingroup
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.0}
+\newcommand{\AuthorBlock}[3]{%
+  {\fontsize{10.1}{11.7}\selectfont\bfseries #1\par}%
+  \vspace{1.5pt}%
+  {\fontsize{8.0}{9.4}\selectfont\href{mailto:#2}{\nolinkurl{#2}}\par}%
+  \vspace{1.0pt}%
+  {\fontsize{8.5}{10.0}\selectfont Independent Researcher, #3\par}%
+}
+\AuthorBlock{Soham Abhay Parundekar}{parundekarsoham@gmail.com}{\SohamLocation}
+\endgroup
+\end{center}
+
+\input{sections/00_abstract}
+
+\input{sections/01_introduction}
+\input{sections/02_index_rules}
+\input{sections/03_risk_model}
+\input{sections/04_data}
+\input{sections/05_replication_design}
+\input{sections/06_reproducible}
+\input{sections/07_estimator}
+\input{sections/08_constraints}
+\input{sections/09_anomaly}
+\input{sections/10_limitations}
+\input{sections/11_conclusion}
+
+\input{sections/90_statements}
+
+\begingroup
+\small
+\setlength{\bibsep}{4pt}
+\input{references_apa}
+\endgroup
+
+\appendix
+\input{sections/A1_identification}
+\input{sections/A2_ladder}
+\input{sections/A3_parameters}
+
+\end{document}

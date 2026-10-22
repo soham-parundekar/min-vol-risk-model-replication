@@ -1,0 +1,33 @@
+% Abstract. Every number carries a ledger id: TE figures E01a/E02a/E03a, the
+% difference E04, the estimator spread E10, the BAB range E18, active sector
+% E19a/E19b. Precision follows the ledger and must not be adjusted here.
+\begin{abstract}
+A published index methodology is not a complete specification. We rebuild two
+low-volatility equity indices from free public data, one defined by a
+constrained optimiser over a commercial factor risk model and one by a rank and
+inverse-volatility rule, and ask how much of each is recoverable. The
+transparent rule is almost fully recoverable: it tracks its fund at 1.62\%
+annualised tracking error with a correlation of 0.9939. The optimiser is not,
+at 5.83\%. The residual is not covariance estimation. Four estimators spanning
+a sample matrix, a two-half-life structural model, constant-correlation
+shrinkage and a Bai--Ng-selected principal-component model produce realised
+volatilities 25 basis points apart under an identical constraint set, which is
+what prior work reports for constrained portfolios generally. Resolving one
+ambiguity in the published constraint document moves tracking error by 2.10
+percentage points. The methodology exempts a single proprietary volatility
+factor from its style bands; a replicator with a different factor set must
+decide whether that exemption covers residual volatility alone or beta as well,
+and exempting both brings tracking error to 3.73\%, replica volatility to
+13.97\% against the fund's 13.45\%, and the beta to the fund to 1.001. On this
+evidence the specification choice is worth roughly an order of magnitude more
+than the estimator choice, for this index pair over this sample; we do not
+establish that ordering in general. What the constraints deliver is control
+rather than lower realised risk, holding the largest active industry weight
+near its five per cent band where the heuristic averages 40.7\%. No portfolio
+shows a six-factor alpha significant at the five per cent level, and
+betting-against-beta loadings between 8.7 and 14.0 absorb what intercept there
+is.
+\end{abstract}
+\noindent\textit{Keywords:} minimum volatility; index replication; factor risk model; covariance estimation; portfolio constraints.\par
+\noindent\textit{JEL classification:} C13, C58, G11, G12, G17.
+\vspace{8pt}

@@ -1,0 +1,104 @@
+\section{The two index rules, and what the documents do not settle}
+\label{sec:rules}
+
+\subsection{The optimised rule}
+The minimum-volatility index is the solution to a quadratic programme. With
+$\wvec$ the index weights, $\bvec$ the parent index weights, $\Sig$ the
+provider's estimated asset covariance matrix, $S$ a sector-membership matrix
+and $\Xsty$ the standardised style exposures, the published constraint set is
+
+\begin{align}
+ \min_{\wvec}\ & \wvec^{\top}\Sig\wvec \label{eq:qp}\\
+ \text{s.t.}\ & \ind^{\top}\wvec = 1, \nonumber\\
+ & 0 \le \wvec_i \le \min(1.5\%,\ 20\,\bvec_i) \quad \forall i, \nonumber\\
+ & \wvec_i = 0 \ \text{ or } \ \wvec_i \ge 0.05\% \quad \forall i, \nonumber\\
+ & \bigl|S^{\top}(\wvec-\bvec)\bigr| \le 5\% \quad \text{per sector},
+   \nonumber\\
+ & \bigl|\Xsty_{-v}{}^{\!\top}(\wvec-\bvec)\bigr| \le 0.25 \quad
+   \text{per non-exempt style}, \nonumber\\
+ & \tfrac{1}{2}\lVert \wvec-\wvec_{\rm prev}\rVert_1 \le 10\%. \nonumber
+\end{align}
+
+The index is reviewed semi-annually, effective the last business day of May and
+November, and the covariance matrix is dated to the end of the month preceding
+the review rather than to the review itself \citep{msci2012minvol}. Where the
+constraint set admits no feasible point the methodology prescribes a relaxation
+sequence, loosening turnover first, then the minimum holding, then the weight
+cap and sector band together, and never the style bands; Appendix~\ref{app:ladder}
+gives the sequence as implemented.
+
+Three features of \eqref{eq:qp} deserve note before the replication. The
+semi-continuous condition on $\wvec_i$ makes the programme mixed-integer: a
+holding is either absent or at least five basis points, with nothing in
+between, which rules out the continuum of dust positions a plain quadratic
+programme would return. The turnover constraint is written against
+$\wvec_{\rm prev}$, which is the previous book after it has drifted with
+prices, not the previous optimisation target. And $\Xsty_{-v}$ carries a
+subscript doing a great deal of work: it is the style block with the volatility
+factor removed, and that removal is the whole mechanism by which the programme
+is allowed to produce a low-volatility portfolio rather than merely a
+constrained one.
+
+\subsection{The heuristic rule}
+The low-volatility index is specified in two sentences. From the parent
+constituents, select the hundred securities with the lowest realised volatility
+over the trailing year of trading days; weight each in proportion to the
+reciprocal of that volatility, normalised to sum to one
+\citep{invesco2024splv497k}. Formally, with $\sigma_i$ the trailing volatility
+and $\mathcal{L}$ the hundred lowest,
+
+\begin{equation}
+ \wvec_i = \frac{\sigma_i^{-1}}{\sum_{j\in\mathcal{L}}\sigma_j^{-1}}
+ \quad \text{for } i\in\mathcal{L}, \qquad \wvec_i = 0 \text{ otherwise.}
+ \label{eq:splv}
+\end{equation}
+
+There is no covariance matrix, no sector constraint, no style constraint and no
+turnover limit. Rebalancing is quarterly. The rule uses only the diagonal of
+the covariance matrix, and only its square root at that.
+
+\input{tables/rules}
+
+\subsection{What the style band does not settle}
+Every constraint in \eqref{eq:qp} except one translates without ambiguity into
+a replicator's own model. A 1.5\% cap is a 1.5\% cap. The sector band needs a
+sector classification, and using a coarser one than the provider is a
+documented approximation with a known direction of error. The turnover cap and
+the minimum holding are numbers.
+
+The style band is different in kind. It is stated in units of standardised
+exposure to factors the methodology names but does not define, and the name it
+gives the exempt factor is the name of a component of a proprietary model. The
+document governing the index examined here exempts \emph{the Barra Volatility
+risk index factor}, in the singular. A public-data factor model built to the
+conventional recipe has two descriptors with an equally good claim to that
+name: the beta of a stock's returns to the parent index, and the volatility of
+the residual from that same regression. The first is systematic risk, the
+second is the part orthogonal to it. Both are volatility in any ordinary sense,
+and the published text does not choose between them.
+
+The choice is not resolved by looking elsewhere in the provider's
+documentation, though it is tempting to try. A later methodology covering the
+provider's \emph{advanced} minimum-volatility family does enumerate the
+exemption as two named factors, beta and residual volatility
+\citep{msci2025minvoladvanced}. That document governs a different index family
+from the one tracked here, so it cannot be read as a statement about this
+index's constraint set. It establishes that the provider's own vocabulary
+admits both readings, which is the opposite of settling the question.
+
+A replicator therefore faces a genuine fork, and both branches are defensible.
+Exempting residual volatility alone is the literal reading: one named factor,
+one exemption, and residual volatility is the descriptor a risk model would
+most naturally call volatility once beta has been accounted for separately.
+Exempting beta as well is the functional reading: the purpose of the exemption
+is to let the optimiser reduce risk, the optimiser's principal lever for
+reducing risk is to hold low-beta stocks, and a $\pm0.25$ standard deviation
+band on beta forecloses most of that lever before the programme starts.
+
+We implement both and report both. Section~\ref{sec:repro} shows that the fork
+is worth 2.10 percentage points of tracking error, and
+Section~\ref{sec:estimator} that the choice among four covariance estimators is
+worth a fortieth of that. The point is not that one reading is correct. It is
+that a reader of the methodology document cannot tell which the index uses, and
+that this single unresolved sentence dominates every estimation decision made
+downstream of it.

@@ -1,0 +1,45 @@
+% Table 1. Descriptive, not empirical: every cell is a provision read off the
+% primary documents cited in the note, so there is no frozen output behind it
+% and make_tables.py does not generate it. Values must be changed only against
+% the source documents.
+\begin{table}[tbp]
+\caption{The two published rules, side by side.}
+\label{tab:rules}
+\centering\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabularx}{\textwidth}{@{}lYY@{}}
+\toprule
+ & Optimised index & Heuristic index\\
+\midrule
+Objective        & Minimise predicted variance & None stated\\
+Risk input       & Full covariance matrix from a commercial factor model
+                 & Trailing one-year realised volatility, per stock\\
+Selection        & Implied by the programme & The 100 lowest-volatility
+                   parent members\\
+Weighting        & Implied by the programme & Proportional to
+                   $1/\sigma_i$\\
+\addlinespace
+Weight cap       & $\min(1.5\%,\ 20\times$ parent weight$)$ & None\\
+Minimum holding  & 0.05\%, or zero & None\\
+Sector band      & $\pm5\%$ active per sector & None\\
+Style band       & $\pm0.25$ SD active per style, volatility exempt & None\\
+Turnover cap     & 10\% one-way per review & None\\
+\addlinespace
+Review frequency & Semi-annual & Quarterly\\
+Effective date   & Last business day of May and November
+                 & Third Friday of the review month\\
+Risk-model date  & End of the month preceding the review & Not applicable\\
+Infeasibility    & Documented relaxation sequence & Cannot arise\\
+\bottomrule
+\end{tabularx}
+\notetext{Provisions for the optimised index are from its provider's published
+methodology \citep{msci2012minvol}; those for the heuristic index are from the
+tracking fund's summary prospectus \citep{invesco2024splv497k}, which states the
+selection and weighting rules in the issuer's own words. The heuristic index's
+review calendar and effective date are the one entry in this table taken from
+published convention rather than from a methodology document: the provider's
+methodology PDF refused the request from the run environment and was not
+retrieved, which Section~\ref{sec:limits} records as an unverified parameter.
+The style band is the row that does not survive translation into another risk
+model, and Section~\ref{sec:rules} takes it up.}
+\end{table}

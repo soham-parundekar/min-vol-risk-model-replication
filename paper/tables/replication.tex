@@ -1,0 +1,20 @@
+\begin{table}[tbp]
+\caption{Replication accuracy against the live funds.}
+\label{tab:replication}
+\centering\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{lrrrrrr}
+\toprule
+Replica & TE (\%) & Corr. & $\beta$ & Replica vol (\%) & Fund vol (\%) & Days\\
+\midrule
+SPLV replica & 1.62 & 0.9939 & 0.967 & 14.06 & 14.46 & 3,862\\
+\addlinespace
+USMV, structural & 5.83 & 0.9320 & 1.090 & 15.73 & 13.45 & 3,603\\
+USMV, sample & 5.77 & 0.9310 & 1.076 & 15.56 & 13.45 & 3,603\\
+USMV, Ledoit--Wolf & 5.57 & 0.9353 & 1.077 & 15.49 & 13.45 & 3,603\\
+USMV, PCA & 5.73 & 0.9313 & 1.072 & 15.49 & 13.45 & 3,603\\
+USMV, structural, beta exempt & 3.73 & 0.9637 & 1.001 & 13.97 & 13.45 & 3,603\\
+\bottomrule
+\end{tabular}
+\notetext{Daily total returns, net of the replicas' modelled trading costs, against each fund's own history from its inception. Tracking error is the annualised standard deviation of the return difference and $\beta$ is the replica's beta to the fund it tracks, so a replica that matched the fund exactly would show a tracking error of zero, a correlation of one and a beta of one. The SPLV replica has the longer window because SPLV began trading before USMV; windows run 2011-05-20 to 2026-09-29 and 2012-05-31 to 2026-09-29. The last row repeats the structural specification with the beta factor added to the style exemption, which is the one specification choice Section~\ref{sec:rules} shows the published methodology does not settle.}
+\end{table}

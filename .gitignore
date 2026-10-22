@@ -24,6 +24,21 @@
 # report embeds the figures directly, and a reader browsing the repository
 # should see the results without running the pipeline first.
 
+# LaTeX build artefacts. The compiled PDF is excluded too: it is reproducible
+# from paper/ with two pdflatex passes, and a binary that changes on every
+# rebuild makes the history unreadable.
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.toc
+paper/*.bbl
+paper/*.blg
+paper/*.fls
+paper/*.fdb_latexmk
+paper/*.synctex.gz
+paper/main.pdf
+paper/build.log
+
 __pycache__/
 *.py[cod]
 .pytest_cache/
