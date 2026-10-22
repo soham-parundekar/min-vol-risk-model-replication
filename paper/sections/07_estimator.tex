@@ -62,6 +62,23 @@ risk; they do not say it by the same amount, because they are computed over
 different windows and standardise differently, and the paper is careful to name
 which is meant wherever a figure appears.
 
+Figure~\ref{fig:bias} plots the rolling statistic for each estimator.
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=0.94\linewidth]{figures/bias.pdf}
+\caption{Rolling bias statistic for the minimum-variance portfolio under each
+covariance estimator, on a 52-week window, against the shaded
+$1\pm\sqrt{2/T}$ band. Panel titles give the full-sample figure. Separate
+panels rather than one axis because the three non-structural estimators trace
+nearly identical paths and would overplot: the similarity is the point and a
+single axis would hide it. All four exceed two during 2020, meaning realised
+risk ran at roughly twice the forecast, and all four spend extended periods
+below the band as well, so the full-sample figures above one are not a uniform
+understatement through time.}
+\label{fig:bias}
+\end{figure}
+
 Understating risk is not a surprise in a minimum-variance portfolio and it has
 a known mechanism. \citet{goldberg2022dispersion} show that excess dispersion
 in the leading eigenvector of an estimated covariance matrix propagates through
