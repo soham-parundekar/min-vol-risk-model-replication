@@ -72,17 +72,20 @@ We also report what the constraints buy, since the comparison invites the
 question of whether the optimiser earns its complexity. On realised volatility
 it does not: over this sample the optimised replicas are more volatile than the
 heuristic one, not less. What the constraints deliver is control over where the
-risk sits. The sector band binds at every review we examine, holding the
-largest active industry weight at five per cent, while the unconstrained rule
-drifts to between 32 and 48 per cent, growing monotonically across its reviews
+risk sits. At every review we examine the sector band is the binding
+constraint, pinning the largest active industry weight at its five per cent
+limit. The heuristic, which has no such limit, drifts from a 32 per cent
+underweight to a 48 per cent one across its own reviews, moving one way only,
 as a single industry became both larger in the parent and more volatile. The
 two sets of review dates do not coincide, so this is a contrast between a
 binding constraint and its absence rather than a matched comparison; it is also
-not a close call. Neither index produces a six-factor alpha significant
-at the five per cent level, and betting-against-beta loadings between 8.7 and
-14.0 absorb what intercept there is, which is consistent with the
-leverage-constraint account of \citet{frazzini2014betting} and does not
-distinguish it from the benchmarking account of \citet{baker2011benchmarks}.
+not a close call. On risk-adjusted return neither index earns anything a
+six-factor model does not already account for at the five per cent level, and
+the betting-against-beta loadings that absorb what intercept there is run from
+8.7 to 14.0. Such loadings fit the leverage-constraint account of
+\citet{frazzini2014betting}; they fit the benchmarking account of
+\citet{baker2011benchmarks} just as well, and daily return regressions cannot
+tell the two apart.
 
 Three boundaries on all of this. The parent universe is a proxy: the optimiser
 works over the S\&P 500 where the real index uses a broader one, and that
