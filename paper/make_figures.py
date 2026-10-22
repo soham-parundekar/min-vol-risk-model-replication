@@ -77,9 +77,18 @@ def _tidy(ax, ygrid=True):
 
 
 def _save(fig, name):
+    """Write the figure, with the creation date pinned.
+
+    Matplotlib stamps the current time into the PDF, so an unchanged figure
+    rebuilds to different bytes every run and a reviewer diffing two checkouts
+    sees four modified files that are visually identical. Pinning the date
+    makes the output a function of the data alone, which is the property the
+    rest of this directory already has.
+    """
     OUT.mkdir(parents=True, exist_ok=True)
     path = OUT / f"{name}.pdf"
-    fig.savefig(path, bbox_inches="tight", pad_inches=0.02)
+    fig.savefig(path, bbox_inches="tight", pad_inches=0.02,
+                metadata={"CreationDate": None})
     plt.close(fig)
     print(f"  wrote paper/figures/{name}.pdf")
 
