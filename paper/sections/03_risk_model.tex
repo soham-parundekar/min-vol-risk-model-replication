@@ -24,8 +24,8 @@ Beta is shrunk following \citet{blume1971assessment},
  \label{eq:blume}
 \end{equation}
 with coefficients summing to one so the parent portfolio retains a beta of one.
-The weights themselves follow the convention in the project's design
-specification rather than a value estimated here.
+The two-thirds weighting is a conventional choice rather than a value estimated
+on this sample, and nothing in the results turns on the exact split.
 
 Each raw descriptor is winsorised at its 1st and 99th cross-sectional
 percentiles and then standardised twice over, to a capitalisation-weighted mean
@@ -125,7 +125,11 @@ principal components of the return covariance and retains $k$ of them, with $k$
 chosen by the \citet{bai2002determining} ICp2 criterion over a search bounded
 at twenty rather than fixed at a round number chosen after seeing results.
 
-The four span the trade-off \citet{briner2008howmuch} describe between
+A long-only minimum-variance portfolio built on US equities from a return-based
+covariance estimate is the design \citet{clarke2006minimum} study directly, and
+the objective itself descends from \citet{markowitz1952portfolio}, whom the
+index provider's own methodology cites. The four estimators span the trade-off
+\citet{briner2008howmuch} describe between
 estimation variance and specification error: the sample matrix imposes no
 structure and pays in variance, the structural model imposes a great deal and
 pays in specification error, and shrinkage and principal components sit between

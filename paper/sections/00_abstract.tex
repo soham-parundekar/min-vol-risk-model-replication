@@ -9,26 +9,28 @@ commercial factor risk model and the second by a rank and inverse-volatility
 rule, and ask how much of each is recoverable. The transparent rule is almost
 fully recoverable: our replica tracks SPLV, the fund on that index, at 1.62\%
 annualised tracking error with a correlation of 0.9939. The optimiser is not,
-tracking USMV at 5.83\%. The residual is not covariance estimation. Four estimators spanning
-a sample matrix, a two-half-life structural model, constant-correlation
-shrinkage and a Bai--Ng-selected principal-component model produce realised
-volatilities 25 basis points apart under an identical constraint set, which is
+tracking USMV at 5.83\%. The residual is not covariance estimation. Four
+estimators spanning a sample matrix, a two-half-life structural model,
+constant-correlation shrinkage and a Bai--Ng-selected principal-component model
+track within 26 basis points of one another under one specification, which is
 what prior work reports for constrained portfolios generally. Resolving one
 ambiguity in the published constraint document moves tracking error by 2.10
-percentage points. The methodology exempts a single proprietary volatility
+percentage points, eight times as far. A block bootstrap separates the two
+cleanly: the exemption effect carries a 95\% interval of [1.84, 2.35]
+percentage points against [0.15, 0.40] for the estimator spread, and exceeds it
+in every one of 2{,}000 resamples. The methodology exempts a single proprietary volatility
 factor from its style bands; a replicator with a different factor set must
 decide whether that exemption covers residual volatility alone or beta as well,
 and exempting both brings tracking error to 3.73\%, replica volatility to
 13.97\% against the fund's 13.45\%, and the beta to the fund to 1.001. On this
-evidence the specification choice is worth roughly an order of magnitude more
-than the estimator choice, for this index pair over this sample; we do not
+evidence the specification choice is worth about eight times the estimator
+choice, for this index pair over this sample; we do not
 establish that ordering in general. What the constraints deliver is control
 rather than lower realised risk: the sector band binds at every review we
 examine, holding the largest active industry weight at five per cent, while
 the unconstrained rule drifts to between 32 and 48 per cent. No portfolio
-shows a six-factor alpha significant at the five per cent level, and
-betting-against-beta loadings between 8.7 and 14.0 absorb what intercept there
-is.
+shows a six-factor alpha significant at the five per cent level, before or
+after a betting-against-beta control whose loadings run from 8.7 to 14.0.
 \end{abstract}
 \noindent\textit{Keywords:} minimum volatility; index replication; factor risk model; covariance estimation; portfolio constraints.\par
 \noindent\textit{JEL classification:} C13, C58, G11, G12, G17.

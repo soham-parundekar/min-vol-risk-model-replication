@@ -33,7 +33,8 @@ Each of the following produces results that look clean. None announces itself.
 
 \textbf{Survivorship.} The quotation service keeps almost nothing for companies
 that were acquired or went through bankruptcy. Of 899 tickers that passed
-through the index over the sample, 242 return no usable history at all. The
+through the index over the sample, 242 return no usable history at all, which
+is 27\% of the names the study would otherwise have used. The
 consequence is not that the sample is smaller but that it is biased in a known
 direction: a parent index rebuilt from the survivors outperforms the one that
 actually existed. We measure the bias rather than assert it, by rebuilding the
@@ -60,9 +61,10 @@ direction survivorship predicts. The 2026 bar covers a partial year.}
 
 \textbf{Ticker reuse.} A symbol released by a delisting is reassigned years
 later to an unrelated company, and the service returns the new company's
-history under the old symbol without comment. Requesting one such symbol
-returns a company that listed in 2025, although the index member of that name
-left in 2008. Joined naively, a recent listing's returns are stitched onto a
+history under the old symbol without comment. Requesting \texttt{ABI}, an index
+member from 1996 until its removal in November 2008, returns a company whose
+price history begins in June 2025, sixteen years after the member of that name
+ceased to exist. Joined naively, a recent listing's returns are stitched onto a
 constituent that no longer exists. The defence is to intersect every price
 series with the window in which that symbol was genuinely an index member and
 to treat a series whose history begins after membership ended as a different

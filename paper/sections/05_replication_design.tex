@@ -8,9 +8,11 @@ it mixed-integer, and solving it exactly over five hundred names at
 twenty-nine review dates is a different undertaking from the one the rest of
 this paper is about. We use the approximation index providers themselves
 describe: solve the continuous relaxation, drop the holdings that fall below
-the floor, re-solve on the survivors, and repeat to a cap of fifteen passes.
-The procedure terminates because each pass strictly shrinks the name set, and
-in practice it converges in far fewer passes than the cap allows.
+the floor, re-solve on the survivors, and repeat to a cap of fifteen passes. The
+procedure terminates because each pass strictly shrinks the name set. It does
+not terminate quickly: the median review takes eleven passes and some reach the
+cap, so the cap is doing work rather than sitting unused, and a review that
+exits at fifteen has not converged so much as been stopped.
 
 This is an approximation and we do not measure its cost. An exact mixed-integer
 solve on a handful of dates would bound the optimality gap, and

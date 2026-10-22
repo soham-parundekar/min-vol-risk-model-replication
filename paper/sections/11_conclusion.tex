@@ -10,8 +10,10 @@ read.
 
 The usual explanation for the difference does not survive measurement. Four
 covariance estimators, from a singular sample matrix to a structural factor
-model, produce realised volatilities 25 basis points apart under an identical
-constraint set. That is what prior work reports for constrained portfolios
+model, track the fund within 26 basis points of one another under one
+specification, against 2.10 percentage points for the exemption reading; a
+block bootstrap separates the two intervals cleanly and the ordering holds in
+every resample. That is what prior work reports for constrained portfolios
 generally, and the reason is also known: binding constraints act as shrinkage,
 so a tightly constrained feasible set leaves estimator differences nowhere to
 express themselves. Our contribution on that point is confirmation in a
@@ -33,8 +35,7 @@ benchmarking one.
 The practical implication is narrow enough to state exactly. For anyone
 replicating a constrained index from public data, effort spent resolving what
 the methodology document actually specifies is worth more than effort spent
-improving the covariance estimate, by roughly an order of magnitude in this
-case. The broader implication, which this evidence motivates rather than
+improving the covariance estimate, by a factor of about eight in this case. The broader implication, which this evidence motivates rather than
 establishes, is that an index methodology stated in terms of a proprietary
 factor model is not fully reproducible by construction, and that the gap this
 creates is measurable and worth measuring.

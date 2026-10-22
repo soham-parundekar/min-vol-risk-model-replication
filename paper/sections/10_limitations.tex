@@ -1,9 +1,12 @@
 \section{Interpretation and limitations}
 \label{sec:limits}
 The limitations below are ordered by how much they would change a conclusion if
-repaired, not by how easily they could be.
+repaired, not by how easily they could be. They are numbered so that a reader
+responding to the paper can refer to them.
 
-\textbf{The parent universe is a proxy.} The optimised index is defined over
+\begin{enumerate}[label=L\arabic*., leftmargin=*, itemsep=4pt]
+
+\item \textbf{The parent universe is a proxy.} The optimised index is defined over
 its provider's broad investable-market parent of roughly 2{,}500 names across
 large, mid and small capitalisation. We optimise over the 500-name index. This
 is the single largest known contributor to the optimised replication error, it
@@ -12,21 +15,21 @@ the tracking error in Table~\ref{tab:replication} could ever have been. It does
 not affect the comparison between specifications or between estimators, which
 share the same proxy, and that is the comparison the paper rests on.
 
-\textbf{The risk model is not the provider's.} Six style factors, twelve
+\item \textbf{The risk model is not the provider's.} Six style factors, twelve
 SIC-derived industry groups, weekly rather than daily factor returns, no
 eigenfactor adjustment. It is built to the conventional recipe but it is not
 the model the index is defined against, and no public-data model could be. We
 therefore do not claim to have reproduced the index's risk model, only to have
 built one and measured what replication it supports.
 
-\textbf{Industries are SIC-derived.} The classification is coarser and older
+\item \textbf{Industries are SIC-derived.} The classification is coarser and older
 than the one the provider uses, and EDGAR publishes one current code per
 registrant rather than a history, so a company that materially changed business
 carries its present-day code backwards through the sample. The sector band in
 \eqref{eq:qp} is therefore applied to groups that approximate the provider's
 sectors rather than matching them.
 
-\textbf{The minimum-holding rule is handled heuristically and the gap is not
+\item \textbf{The minimum-holding rule is handled heuristically and the gap is not
 measured.} Solving \eqref{eq:qp} exactly is a mixed-integer problem; we solve
 the relaxation, drop sub-floor holdings and re-solve. An exact solve on a small
 number of review dates would bound the optimality gap and we have not performed
@@ -39,15 +42,16 @@ unable to satisfy the band exactly. The excess is twelve basis points and does
 not affect any comparison in the paper, but it is an unquantified consequence
 of the heuristic rather than a rounding.
 
-\textbf{One published parameter was never verified against its document.} The
+\item \textbf{One published parameter was never verified against its document.} The
 heuristic index's quarterly review calendar and third-Friday effective date are
-taken from published convention. The provider's methodology document returned
-an HTTP 403 from the run environment and was not retrieved, and we did not
+taken from published convention. The provider's methodology document
+\citep{spdji_lowvol_methodology} returned an HTTP 403 from the run environment
+and was not retrieved, and we did not
 attempt to obtain it by any other route. The selection and weighting rules,
 which are the substantive content of that index, were confirmed independently
 from the tracking fund's prospectus.
 
-\textbf{The sector comparison is not matched on dates.} The industry-exposure
+\item \textbf{The sector comparison is not matched on dates.} The industry-exposure
 figures in Section~\ref{sec:constraints} cover the six most recent reviews for
 each portfolio. Because the optimised index reviews semi-annually and the
 heuristic quarterly, those six span 2023-11 to 2026-05 for one and 2025-05 to
@@ -56,20 +60,21 @@ binding constraint and the absence of one, and the magnitudes involved are far
 larger than any plausible period effect, but it is not a matched comparison and
 should not be read as one.
 
-\textbf{The attribution windows differ from the portfolio windows.} The factor
+\item \textbf{The attribution windows differ from the portfolio windows.} The factor
 vintages end before the price sample does, at 2026-08-31 for the six-factor
 regressions and 2026-07-31 once betting-against-beta is included. Each table
 states its own window and the two alpha blocks are not a paired test on an
 identical sample.
 
-\textbf{Survivorship is measured, not removed.} The quantification in
+\item \textbf{Survivorship is measured, not removed.} The quantification in
 Section~\ref{sec:data} tells the reader the size and direction of the bias; it
 does not correct it. Both replicas and the rebuilt parent inherit it, so
 comparisons between them are affected far less than their levels are.
 
-\textbf{One index pair, one sample, one market.} Every result here is US
+\item \textbf{One index pair, one sample, one market.} Every result here is US
 large-capitalisation equity between 2011 and 2026. The finding that
 specification ambiguity dominates estimator choice is a demonstration that the
 ordering can be this large in a case where both are measurable. It is not a
 claim about the relative importance of specification and estimation in
 general, and a single case cannot establish one.
+\end{enumerate}

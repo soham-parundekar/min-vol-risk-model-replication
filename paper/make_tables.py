@@ -145,9 +145,16 @@ def horse_race_table() -> str:
     bs = pd.read_parquet(SRC / "bias_statistics.parquet")
     mv = bs[bs.family == "min_variance"].set_index("estimator")
     ladder = _ladder_counts()
+    ra = pd.read_parquet(SRC / "replication_accuracy.parquet").xs("net", level="basis")
+    tes = [float(ra.xs(f"usmv_{k}", level="replica").iloc[0].tracking_error_ann)
+           for k in ESTIMATORS]
+    te_spread = max(tes) - min(tes)
+    boot = pd.read_parquet(OUT / "bootstrap_intervals.parquet")
+    sp = boot[boot.quantity.str.startswith("estimator spread")].iloc[0]
+    s_lo, s_hi = float(sp.ci_low), float(sp.ci_high)
 
     lines = _header(
-        "The four covariance estimators under an identical constraint set.",
+        "The four covariance estimators under one specification.",
         "tab:horserace",
         "lrrrrrrr",
     )
@@ -174,8 +181,17 @@ def horse_race_table() -> str:
     nobs = int(mv.n_obs.iloc[0])
     note = (
         "Each estimator is run through the same constrained optimiser on the "
-        f"same rebalance calendar, so the rows differ only in $\\Sigma$. The "
-        f"four realised volatilities span {spread * 1e4:.0f} basis points. "
+        "same rebalance calendar. They do not face an identical realised "
+        "constraint set: the last two columns show the relaxation ladder "
+        "resolving differently across estimators, which is itself an estimator "
+        "effect. The four realised volatilities span roughly a quarter of a "
+        "percentage point. Their tracking errors, in Table~\\ref{tab:replication}, "
+        f"span {te_spread * 1e4:.0f} basis points as printed there, and that is "
+        "the figure comparable with the exemption effect in "
+        "Section~\\ref{sec:repro}, both being tracking errors against the same "
+        "fund. A circular block bootstrap on daily active returns, 21-day "
+        f"blocks, puts the spread at [{s_lo * 100:.2f}, {s_hi * 100:.2f}] "
+        "percentage points. "
         "Pred./real. is the ratio of mean predicted to realised annualised "
         "volatility, and bias $b$ is the standard deviation of realised return "
         "divided by the previous period's predicted standard deviation, "
@@ -198,13 +214,20 @@ def alpha_table() -> str:
     base = at[~at.model.str.contains("BAB")].set_index("portfolio")
     bab = at[at.model.str.contains("BAB")].set_index("portfolio")
 
+    # Every portfolio appears. An earlier version listed five, which left the
+    # smallest betting-against-beta t-statistic quoted in the text recoverable
+    # from no table in the paper.
     order = [
-        "USMV (actual ETF)", "usmv_structural", "usmv_structural_betafree",
+        "USMV (actual ETF)", "usmv_structural", "usmv_sample",
+        "usmv_ledoit_wolf", "usmv_pca", "usmv_structural_betafree",
         "SPLV (actual ETF)", "splv",
     ]
     labels = {
         "USMV (actual ETF)": "USMV, the fund",
         "usmv_structural": "USMV replica, structural",
+        "usmv_sample": "USMV replica, sample",
+        "usmv_ledoit_wolf": "USMV replica, Ledoit--Wolf",
+        "usmv_pca": "USMV replica, PCA",
         "usmv_structural_betafree": "USMV replica, beta exempt",
         "SPLV (actual ETF)": "SPLV, the fund",
         "splv": "SPLV replica",

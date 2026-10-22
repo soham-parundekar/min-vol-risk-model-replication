@@ -3,21 +3,47 @@
 Section~\ref{sec:repro} put a magnitude on one specification choice. This
 section puts one on the estimation choice it is usually compared against.
 Table~\ref{tab:horserace} runs all four covariance estimators through the same
-optimiser, on the same review calendar, under the same constraint set, so the
-rows differ in $\Sig$ and in nothing else.
+optimiser, on the same review calendar, under the same written constraint set.
 
 \input{tables/horserace}
 
-The four realised volatilities span 25 basis points, from 15.49\% to 15.73\%.
-The ordering is not the one the estimators' statistical properties would
-predict: the sample covariance, singular by construction at five hundred names
-and 156 observations, delivers 15.56\%, inside the range and below the
-structural model. Tracking error against the fund tells the same story, spanning
-5.57\% to 5.83\% across the four in Table~\ref{tab:replication}.
+One qualification before the numbers. It would be convenient to say the rows
+differ in $\Sig$ and in nothing else, and that is not quite true. The last two
+columns show the relaxation ladder resolving differently across estimators: the
+structural model needed a loosened bound at two of twenty-nine reviews, the
+principal-component model at seven, and the sample estimator abandoned one
+review altogether. The four runs therefore share a specification without
+sharing a realised constraint set. That is itself an estimator effect rather
+than a confound to be apologised for, since an estimator that produces
+infeasible problems more often is worse on a dimension the realised volatility
+does not capture, but the comparison is between specifications-plus-outcomes,
+not between matrices held in isolation.
+
+The four realised volatilities span roughly a quarter of a percentage point,
+from 15.49\% to 15.73\%. The ordering is not the one the estimators'
+statistical properties would predict: the sample covariance, singular by
+construction at five hundred names and 156 observations, delivers 15.56\%,
+inside the range and below the structural model. Tracking error against the
+fund, which is the quantity Section~\ref{sec:repro} measures the exemption
+effect in and therefore the one that permits a comparison, spans 5.57\% to
+5.83\% in Table~\ref{tab:replication}, a range of 26 basis points. The
+exemption effect is 2.10 percentage points. The bootstrap intervals quoted in
+Section~\ref{sec:repro} do not overlap.
 
 This is what \citet{dom2025beyond} report for constrained portfolios in
 general, and we read our result as a confirmation of theirs in a specific
-published constraint set rather than as a new finding.
+published constraint set rather than as a new finding. One half of their
+result, though, our evidence does not support. Alongside the finding that
+constraints make further shrinkage largely redundant, they report that
+modelling the time-series dynamics of returns remains statistically relevant
+for reducing volatility. The only estimator here that models dynamics is the
+two-half-life structural model, and it delivers the highest realised volatility
+of the four. We do not read this as a contradiction so much as a difference in
+what is being varied: their dynamic estimator alters the covariance process
+while holding the cross-sectional structure fixed, whereas ours changes both at
+once, adding an industry-and-style factor structure that the other three do not
+impose. Separating the two would need a dynamic estimator without the factor
+structure, which this study does not run.
 \citet{jagannathan2003risk} supply the reason, and it is worth stating
 precisely because it is easy to mistake for a claim that estimation does not
 matter. Binding weight constraints act as a form of shrinkage. A long-only
@@ -69,7 +95,12 @@ Figure~\ref{fig:bias} plots the rolling statistic for each estimator.
 \includegraphics[width=0.94\linewidth]{figures/bias.pdf}
 \caption{Rolling bias statistic for the minimum-variance portfolio under each
 covariance estimator, on a 52-week window, against the shaded
-$1\pm\sqrt{2/T}$ band. Panel titles give the full-sample figure. Separate
+$1\pm\sqrt{2/T}$ band. The band is a full-sample reference reproduced for
+orientation, not a pointwise test for this series: it is derived under
+independence, while successive points here share fifty-one weeks of history and
+the underlying returns are themselves serially correlated, so excursions are
+considerably less surprising than its width suggests. Panel titles give the
+full-sample figure. Separate
 panels rather than one axis because the three non-structural estimators trace
 nearly identical paths and would overplot: the similarity is the point and a
 single axis would hide it. All four exceed two during 2020, meaning realised
@@ -87,6 +118,18 @@ with the optimiser selecting precisely the directions in which the estimate is
 most overconfident. All four of our estimators sit outside the band on the same
 side, which is consistent with that account and is not evidence for it over any
 other.
+
+There is also a formal counterpart to the argument of this section.
+\citet{goldberg2025eigenvector} construct covariance estimates tailored to the
+constraints a portfolio will be optimised under, shrinking the leading
+eigenvector toward a subspace determined by the constraint gradients. That the
+right estimate depends on the constraint set is the same proposition this
+section argues empirically from the other direction: when the constraint set is
+tight enough, estimates that differ substantially in isolation stop differing
+where it counts. Their result is the stronger one, being analytic, and a
+replication study is not the place to extend it; we note the connection because
+it suggests the finding here is a special case of something general rather than
+a feature of this index.
 
 The practical reading is that an optimiser of this kind should not be trusted
 to forecast its own risk, whichever of these four matrices sits underneath it.

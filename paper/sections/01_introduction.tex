@@ -19,6 +19,17 @@ provider names but does not define, and a replicator with a different factor
 set has to decide what those names map onto. The decision is invisible in the
 methodology document and consequential in the result.
 
+This is a different problem from index tracking as that literature usually
+poses it. There the index is taken as given and the task is to approximate its
+return series with a manageable subset of its constituents, whether by
+optimisation, by statistical factorisation or by learned models; recent
+treatments include \citet{cesarone2025benchmark}, and \citet{dhingra2026index}
+survey the field. We are not approximating a return series. We are
+reconstructing the rule that generates it, from the document that states the
+rule, and asking what that document leaves undetermined. Tracking error appears
+here as the measure of how well the reconstruction succeeded, not as an
+objective anything was optimised against.
+
 We quantify how consequential. Using a weekly factor risk model built entirely
 from free data, we rebuild both indices over the funds' own lifetimes and
 measure each replica against the fund that tracks the index it targets. The
@@ -35,8 +46,7 @@ of them. We run four: the sample matrix, a two-half-life structural factor
 model in the Barra idiom, constant-correlation shrinkage after
 \citet{ledoit2003improved}, and a principal-component model whose factor count
 is chosen by the \citet{bai2002determining} criteria rather than assumed. Under
-an identical constraint set they produce realised volatilities 25 basis points
-apart. That is the ordering \citet{dom2025beyond} report for constrained
+one specification they track the fund within 26 basis points of one another. That is the ordering \citet{dom2025beyond} report for constrained
 portfolios in general, and \citet{jagannathan2003risk} supply the reason:
 binding weight constraints act as a form of shrinkage, so a portfolio that is
 already constrained has less to gain from a better estimate of $\Sig$. Our
@@ -52,8 +62,11 @@ index in question does not say which. Exempting residual volatility alone gives
 5.83\%. Exempting beta as well gives 3.73\%, with replica volatility of 13.97\%
 against the fund's 13.45\% and a beta to the fund of 1.001. One sentence in a
 constraint document, read two defensible ways, moves tracking error by 2.10
-percentage points, roughly an order of magnitude more than the choice among
-four covariance estimators moved realised volatility.
+percentage points, eight times what the choice among four covariance estimators
+moves the same quantity. The two are not close: a circular block bootstrap on
+daily active returns puts the exemption effect at [1.84, 2.35] percentage
+points and the estimator spread at [0.15, 0.40], and the first exceeds the
+second in all 2{,}000 resamples.
 
 We also report what the constraints buy, since the comparison invites the
 question of whether the optimiser earns its complexity. On realised volatility
