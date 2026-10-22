@@ -11,6 +11,7 @@
   volume  = {30},
   number  = {4},
   pages   = {110--119},
+  doi     = {10.3905/jpm.2004.110},
   note    = {REF-006. Constant-correlation shrinkage target and the analytic
              shrinkage intensity used in src/minvol/risk/covariance.py. Not the
              scaled-identity estimator of the authors' other 2004 paper, which
@@ -37,8 +38,11 @@
   volume  = {111},
   number  = {1},
   pages   = {1--25},
+  doi     = {10.1016/j.jfineco.2013.10.005},
   note    = {REF-008. The leverage-constraint account of the low-volatility
-             effect. Citation as given by AQR in the dataset file.}
+             effect. First taken from AQR's own citation in the dataset file,
+             since confirmed against Crossref. The 2014 year is the issue year;
+             the article appeared online in 2013.}
 }
 
 @article{fama2015five,
@@ -49,19 +53,22 @@
   volume  = {116},
   number  = {1},
   pages   = {1--22},
+  doi     = {10.1016/j.jfineco.2014.10.010},
   note    = {REF-009. Base model for the attribution regressions.}
 }
 
 @article{markowitz1952portfolio,
   author  = {Markowitz, Harry},
   title   = {Portfolio Selection},
-  journal = {Journal of Finance},
+  journal = {The Journal of Finance},
   year    = {1952},
   volume  = {7},
+  number  = {1},
+  pages   = {77--91},
+  doi     = {10.1111/j.1540-6261.1952.tb01525.x},
   note    = {REF-010. Cited as MSCI cites it in the methodology document that
-             defines the index being replicated. Issue and pages are not
-             asserted because the citing footnote does not give them and the
-             original was not checked.}
+             defines the index being replicated. Issue and pages were missing
+             from that footnote and have since been confirmed against Crossref.}
 }
 
 @techreport{msci2012minvol,
@@ -171,4 +178,203 @@
   urldate      = {2026-10-10},
   note         = {REF-018. Point-in-time membership panel. The loader records
                   the commit hash so a run is reproducible against a vintage.}
+}
+
+% ---------------------------------------------------------------------------
+% Literature added for the research paper. Every DOI below was checked against
+% Crossref on 2026-10-22; author lists, volumes, issues and pages are as
+% Crossref returned them, not as secondary indexes reported them.
+% ---------------------------------------------------------------------------
+
+@article{jagannathan2003risk,
+  author  = {Jagannathan, Ravi and Ma, Tongshu},
+  title   = {Risk Reduction in Large Portfolios: Why Imposing the Wrong
+             Constraints Helps},
+  journal = {The Journal of Finance},
+  year    = {2003},
+  volume  = {58},
+  number  = {4},
+  pages   = {1651--1683},
+  doi     = {10.1111/1540-6261.00580},
+  note    = {REF-020. Constraints act as shrinkage, so constraining a portfolio
+             substitutes for a better covariance estimate. The mechanism behind
+             this study's main result.}
+}
+
+@article{dom2025beyond,
+  author  = {Dom, M. Sipke and Howard, Clint and Jansen, Maarten and
+             Lohre, Harald},
+  title   = {Beyond {GMV}: the relevance of covariance matrix estimation for
+             risk-based portfolio construction},
+  journal = {Quantitative Finance},
+  year    = {2025},
+  volume  = {25},
+  number  = {3},
+  pages   = {403--419},
+  doi     = {10.1080/14697688.2025.2468268},
+  note    = {REF-021. The nearest published neighbour to the estimator horse
+             race. The horse-race result is reported as a confirmation of this
+             paper in a new setting, not as a discovery.}
+}
+
+@article{alonso2020devil,
+  author  = {Alonso, Nicholas and Nusinzon, Oleg},
+  title   = {The Devil Is in the Details: The Risks Often Ignored in
+             Low-Volatility Investing},
+  journal = {The Journal of Portfolio Management},
+  year    = {2020},
+  volume  = {46},
+  number  = {7},
+  pages   = {58--70},
+  doi     = {10.3905/jpm.2020.1.163},
+  note    = {REF-022. Reports high sensitivity of optimiser-based low-volatility
+             portfolios to risk-model inputs. Counter-evidence the discussion
+             reconciles against this study's 25 basis point spread.}
+}
+
+@article{ang2006crosssection,
+  author  = {Ang, Andrew and Hodrick, Robert J. and Xing, Yuhang and
+             Zhang, Xiaoyan},
+  title   = {The Cross-Section of Volatility and Expected Returns},
+  journal = {The Journal of Finance},
+  year    = {2006},
+  volume  = {61},
+  number  = {1},
+  pages   = {259--299},
+  doi     = {10.1111/j.1540-6261.2006.00836.x},
+  note    = {REF-023. Research motivation.}
+}
+
+@article{baker2011benchmarks,
+  author  = {Baker, Malcolm and Bradley, Brendan and Wurgler, Jeffrey},
+  title   = {Benchmarks as Limits to Arbitrage: Understanding the
+             Low-Volatility Anomaly},
+  journal = {Financial Analysts Journal},
+  year    = {2011},
+  volume  = {67},
+  number  = {1},
+  pages   = {40--54},
+  doi     = {10.2469/faj.v67.n1.4},
+  note    = {REF-024. The benchmarking account of the low-volatility effect,
+             presented alongside the leverage-constraint account of REF-008.}
+}
+
+@article{haugen1991efficient,
+  author  = {Haugen, Robert A. and Baker, Nardin L.},
+  title   = {The efficient market inefficiency of capitalization-weighted
+             stock portfolios},
+  journal = {The Journal of Portfolio Management},
+  year    = {1991},
+  volume  = {17},
+  number  = {3},
+  pages   = {35--40},
+  doi     = {10.3905/jpm.1991.409335},
+  note    = {REF-025. Background: the effect predates the index products.}
+}
+
+@article{blitz2007volatility,
+  author  = {Blitz, David C. and van Vliet, Pim},
+  title   = {The Volatility Effect},
+  journal = {The Journal of Portfolio Management},
+  year    = {2007},
+  volume  = {34},
+  number  = {1},
+  pages   = {102--113},
+  doi     = {10.3905/jpm.2007.698039},
+  note    = {REF-026. Literature section.}
+}
+
+@article{clarke2006minimum,
+  author  = {Clarke, Roger G. and de Silva, Harindra and Thorley, Steven},
+  title   = {Minimum-Variance Portfolios in the {U.S.} Equity Market},
+  journal = {The Journal of Portfolio Management},
+  year    = {2006},
+  volume  = {33},
+  number  = {1},
+  pages   = {10--24},
+  doi     = {10.3905/jpm.2006.661366},
+  note    = {REF-027. Closest precedent for a long-only minimum-variance
+             portfolio on US equities from a return-based covariance estimate.}
+}
+
+@article{demiguel2009optimal,
+  author  = {DeMiguel, Victor and Garlappi, Lorenzo and Uppal, Raman},
+  title   = {Optimal Versus Naive Diversification: How Inefficient is the
+             1/{N} Portfolio Strategy?},
+  journal = {The Review of Financial Studies},
+  year    = {2009},
+  volume  = {22},
+  number  = {5},
+  pages   = {1915--1953},
+  doi     = {10.1093/rfs/hhm075},
+  note    = {REF-028. Cited by issue year. Appeared online in 2007, which some
+             indexes report as the publication year.}
+}
+
+@article{ledoit2003improved,
+  author  = {Ledoit, Olivier and Wolf, Michael},
+  title   = {Improved estimation of the covariance matrix of stock returns with
+             an application to portfolio selection},
+  journal = {Journal of Empirical Finance},
+  year    = {2003},
+  volume  = {10},
+  number  = {5},
+  pages   = {603--621},
+  doi     = {10.1016/S0927-5398(03)00007-0},
+  note    = {REF-029. The original constant-correlation shrinkage paper, kept
+             distinct from REF-006 because the two are routinely conflated.}
+}
+
+@article{briner2008howmuch,
+  author  = {Briner, Beat and Connor, Gregory},
+  title   = {How much structure is best? {A} comparison of market model, factor
+             model and unstructured equity covariance matrices},
+  journal = {The Journal of Risk},
+  year    = {2008},
+  volume  = {10},
+  number  = {4},
+  pages   = {3--30},
+  doi     = {10.21314/JOR.2008.180},
+  note    = {REF-030. Prior work on the estimation-variance against
+             specification-error trade-off the four estimators span.}
+}
+
+@article{goldberg2022dispersion,
+  author  = {Goldberg, Lisa R. and Papanicolaou, Alex and Shkolnik, Alex},
+  title   = {The Dispersion Bias},
+  journal = {SIAM Journal on Financial Mathematics},
+  year    = {2022},
+  volume  = {13},
+  number  = {2},
+  pages   = {521--550},
+  doi     = {10.1137/21M144058X},
+  note    = {REF-031. The named mechanism for risk forecasts that understate a
+             minimum-variance portfolio's realised risk.}
+}
+
+@article{blume1971assessment,
+  author  = {Blume, Marshall E.},
+  title   = {On the Assessment of Risk},
+  journal = {The Journal of Finance},
+  year    = {1971},
+  volume  = {26},
+  number  = {1},
+  pages   = {1--10},
+  doi     = {10.1111/j.1540-6261.1971.tb00584.x},
+  note    = {REF-032. Beta shrinkage toward one. The specific 0.67 and 0.33
+             weights follow the project context document, not a value stated in
+             this paper.}
+}
+
+@article{newey1987simple,
+  author  = {Newey, Whitney K. and West, Kenneth D.},
+  title   = {A Simple, Positive Semi-Definite, Heteroskedasticity and
+             Autocorrelation Consistent Covariance Matrix},
+  journal = {Econometrica},
+  year    = {1987},
+  volume  = {55},
+  number  = {3},
+  pages   = {703--708},
+  doi     = {10.2307/1913610},
+  note    = {REF-033. Standard errors for the attribution and alpha regressions.}
 }

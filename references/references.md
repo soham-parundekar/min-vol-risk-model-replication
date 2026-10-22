@@ -138,3 +138,57 @@ URL, the date accessed, and how another researcher can obtain it legitimately.
 Nothing here was obtained by working around a paywall, a login or an access
 control; the one document that refused the request (REF-005) is recorded as
 not retrieved, and the parameter that depended on it is flagged in the report.
+
+## Literature added for the written paper
+
+The register above was built around what the implementation consumed. Writing
+the paper needed a wider literature, and the following were added as REF-020
+to REF-033. Every DOI was checked against Crossref; where an index and Crossref
+disagreed, Crossref was taken as authoritative and the disagreement is noted in
+the register.
+
+- **REF-020** Jagannathan and Ma (2003), on constraints acting as shrinkage.
+  This is the theoretical home of the study's main result and its absence from
+  the original register was the largest gap.
+- **REF-021** Dom, Howard, Jansen and Lohre (2025), the nearest published
+  neighbour to the estimator comparison. They report the same ordering in
+  constrained portfolios generally. The horse race here is therefore presented
+  as a confirmation in a specific published index's constraint set, not as a
+  new finding.
+- **REF-022** Alonso and Nusinzon (2020), who report the opposite ordering for
+  risk-model inputs. Kept because evidence that cuts against the result belongs
+  in the paper, with the reconciliation stated rather than the paper omitted.
+- **REF-023** to **REF-026** The low-volatility literature the research
+  question sits in: Ang, Hodrick, Xing and Zhang (2006), Baker, Bradley and
+  Wurgler (2011), Haugen and Baker (1991), Blitz and van Vliet (2007).
+- **REF-027**, **REF-028**, **REF-030** The portfolio-construction precedents:
+  Clarke, de Silva and Thorley (2006) on long-only minimum variance in US
+  equities, DeMiguel, Garlappi and Uppal (2009) on optimisation losing to a
+  simple rule, Briner and Connor (2008) on how much covariance structure is
+  worth imposing.
+- **REF-029** Ledoit and Wolf (2003), the original constant-correlation
+  shrinkage paper, kept separate from REF-006 because the two are routinely
+  conflated and only one of them describes what this project implements.
+- **REF-031** Goldberg, Papanicolaou and Shkolnik (2022), which names the
+  mechanism behind risk forecasts that understate a minimum-variance
+  portfolio's realised risk.
+- **REF-032**, **REF-033** The two method citations the code had been using
+  without attribution: Blume (1971) for beta shrinkage toward one, and Newey
+  and West (1987) for the regression standard errors.
+
+### One source that could not be verified, and is therefore not cited
+
+The Barra USE4 methodology notes are named in the project context document and
+would be the natural citation for any claim about what a commercial equity risk
+model contains. MSCI's own link for the report now resolves to a product
+listing page rather than the document, and the only retrievable copies are
+third-party re-uploads whose redistribution status is unclear. Since the
+metadata could not be confirmed from the publisher and the copies should not be
+treated as the source of record, the document is not cited anywhere.
+
+The practical consequence is that the paper does not state how many style
+factors a commercial model carries, or compare its own six against a specific
+count. The structural model is described by what it is, and the argument about
+how much covariance structure is worth imposing rests on REF-030 instead, which
+is verifiable. This is a narrower claim than the research record makes and the
+narrower one is the defensible one.
