@@ -1,3 +1,76 @@
 \section{Parameters and their provenance}
 \label{app:parameters}
-Pending.
+Every number the pipeline needs is declared in one configuration file rather
+than distributed through the code, so that the whole specification can be read
+in one place and a robustness run can vary one input without editing a module.
+The table separates values transcribed from a published document from values
+that are our own modelling choices, because the two carry very different
+authority: the first are facts about the index being replicated and the second
+are decisions a reader may reasonably disagree with.
+
+\begin{table}[tbp]
+\caption{Parameters, grouped by where their authority comes from.}
+\label{tab:parameters}
+\centering\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabularx}{\textwidth}{@{}lrY@{}}
+\toprule
+Parameter & Value & Source\\
+\midrule
+\multicolumn{3}{@{}l}{\textit{Transcribed from the published index
+methodologies}}\\
+Weight cap & $\min(1.5\%, 20b_i)$ & Optimised index methodology\\
+Minimum holding & 5 bp & Optimised index methodology\\
+Sector band & $\pm5\%$ & Optimised index methodology\\
+Style band & $\pm0.25$ SD & Optimised index methodology\\
+Turnover cap & 10\% one-way & Optimised index methodology\\
+Review months & May, November & Optimised index methodology\\
+Review effective date & Last business day & Optimised index methodology\\
+Covariance dating & End of prior month & Optimised index methodology\\
+Relaxation ladder & Table~\ref{tab:ladder} & Optimised index methodology\\
+Holdings & 100 & Heuristic index, via fund prospectus\\
+Volatility window & 252 days & Heuristic index, via fund prospectus\\
+Weighting & $\propto 1/\sigma_i$ & Heuristic index, via fund prospectus\\
+Review months & Feb, May, Aug, Nov & Published convention; not verified\\
+\addlinespace
+\multicolumn{3}{@{}l}{\textit{Our modelling choices}}\\
+Exposure start & 2010-01-01 & XBRL coverage; see
+Section~\ref{sec:data}\\
+Observation frequency & Weekly, Friday & Balances estimation noise against
+responsiveness\\
+Beta window & 252 days & Conventional\\
+Beta shrinkage & $0.67\beta+0.33$ & Blume-style, weights from the design
+specification\\
+Momentum & 252 days, skip 21 & Conventional 12-1 construction\\
+Liquidity window & 63 days & Trailing quarter\\
+Winsorisation & 1st, 99th pct & Applied to raw descriptors\\
+Industry scheme & Fama--French 12 & Coarser than the provider's; see
+Section~\ref{sec:limits}\\
+Min.\ names per industry & 5 & Below this an industry return is an average of
+a few stocks\\
+Regression weights & $\sqrt{b_i}$ & Barra convention\\
+Factor volatility half-life & 17 weeks & Short-horizon convention, converted
+from days\\
+Factor correlation half-life & 50 weeks & As above; correlations are more
+stable\\
+Specific volatility half-life & 26 weeks & Our choice\\
+Specific variance shrinkage & 0.30 toward decile mean & Stabilises thin
+histories\\
+Sample window, non-structural & 156 weeks & Common to all three, so the race
+is like with like\\
+PCA criterion & Bai--Ng ICp2, $k\le20$ & Criterion rather than a round
+number\\
+Covariance minimum history & 104 weeks & Refuses to estimate a $19\times19$
+matrix on less\\
+Semi-continuous passes & 15 & Cap; convergence is much faster in practice\\
+Transaction cost & 5 bp one-way & Results reported gross and net\\
+\bottomrule
+\end{tabularx}
+\notetext{Where a value is transcribed, the full citation, the document
+version and the date it was retrieved are recorded in the accompanying
+repository's source register rather than repeated here. The one row marked
+\emph{not verified} is the heuristic index's review calendar, whose methodology
+document could not be retrieved; Section~\ref{sec:limits} explains. Values in
+the lower block are choices, and a reader who would make them differently can
+vary any one of them in the configuration file without touching a module.}
+\end{table}

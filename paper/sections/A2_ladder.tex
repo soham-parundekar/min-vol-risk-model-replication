@@ -1,3 +1,47 @@
 \section{The relaxation ladder as implemented}
 \label{app:ladder}
-Pending.
+The ladder below is transcribed from the provider's published infeasibility
+procedure \citep{msci2012minvol}. Rung 0 is the published constraint set. The
+solver attempts each rung in order and stops at the first that yields a
+feasible book; if rung 12 fails, the review produces no trade and the previous
+weights are carried forward unchanged.
+
+\begin{table}[tbp]
+\caption{The thirteen rungs, in the order attempted.}
+\label{tab:ladder}
+\centering\small
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{rrrrrl}
+\toprule
+Rung & Turnover & Min.\ holding & Weight cap & Sector band & What gave way\\
+\midrule
+ 0 & 10\% & 5.0 bp & 1.5\% & 5.0\% & nothing; published set\\
+\addlinespace
+ 1 & 15\% & 5.0 bp & 1.5\% & 5.0\% & turnover\\
+ 2 & 20\% & 5.0 bp & 1.5\% & 5.0\% & turnover\\
+ 3 & 25\% & 5.0 bp & 1.5\% & 5.0\% & turnover\\
+ 4 & 30\% & 5.0 bp & 1.5\% & 5.0\% & turnover\\
+\addlinespace
+ 5 & 30\% & 4.0 bp & 1.5\% & 5.0\% & minimum holding\\
+ 6 & 30\% & 3.0 bp & 1.5\% & 5.0\% & minimum holding\\
+ 7 & 30\% & 2.0 bp & 1.5\% & 5.0\% & minimum holding\\
+ 8 & 30\% & 1.0 bp & 1.5\% & 5.0\% & minimum holding\\
+\addlinespace
+ 9 & 30\% & 1.0 bp & 3.0\% & 5.0\% & weight cap\\
+10 & 30\% & 1.0 bp & 3.0\% & 7.5\% & weight cap and sector\\
+11 & 30\% & 1.0 bp & 5.0\% & 5.0\% & weight cap\\
+12 & 30\% & 1.0 bp & 5.0\% & 7.5\% & weight cap and sector\\
+\bottomrule
+\end{tabular}
+\notetext{The style band is 0.25 standard deviations at every rung, including
+the last. It is the one bound the published procedure never relaxes, so a book
+produced at any rung remains within 0.25 standard deviations of the parent on
+every constrained style. Two features of this ordering would be easy to get
+wrong by intuition: turnover is exhausted entirely before the minimum holding
+is touched, and the weight cap and sector band move together rather than
+separately. Across the 29 reviews in this study the ladder was needed between
+two and seven times depending on the covariance estimator, and in nearly every
+case a turnover rung sufficed; rung 12 was reached twice, once under the sample
+estimator and once under the beta-exempt variant, and both of those reviews
+produced no trade.}
+\end{table}

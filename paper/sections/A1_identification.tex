@@ -1,3 +1,50 @@
 \section{Identifying the market factor}
 \label{app:identification}
-Pending.
+Industry membership in \eqref{eq:csreg} is exhaustive and exclusive, so the
+industry dummies sum to a column of ones for every stock and the design matrix
+is rank deficient by one. The market factor is not separately identified
+without a side condition.
+
+Let $c_t$ be the vector of industry capitalisation shares at $t$, summing to
+one, and order the $K$ industries so that the largest share is last. Define
+$R \in \mathbb{R}^{K\times(K-1)}$ by
+\begin{equation}
+ R = \begin{bmatrix} I_{K-1} \\[2pt]
+     -c_1/c_K \ \ \cdots \ \ -c_{K-1}/c_K \end{bmatrix},
+ \label{eq:basis}
+\end{equation}
+so that $c^{\top}R = 0$ by construction. Writing $f^{\rm ind} = Rg$ and fitting
+\begin{equation}
+ r_t = \alpha_t\ind + D_t R\,g_t + \Xsty_{t-1} f^{\rm sty}_t + u_t
+ \label{eq:reparam}
+\end{equation}
+by weighted least squares in $(\alpha, g, f^{\rm sty})$ gives a full-rank
+problem whose solution satisfies \eqref{eq:zerosum} exactly. Industry returns
+are recovered as $Rg$. Placing the largest industry last means the division in
+the final row of \eqref{eq:basis} is by the largest available denominator,
+which keeps the reparametrisation numerically well behaved.
+
+The alternative of dropping one industry column produces the same fitted values
+and the same residuals, so a practitioner checking $R^2$ or specific returns
+would see no difference. What changes is the meaning of every coefficient. With
+a column dropped, the intercept is the omitted industry's return rather than
+the market return, and each remaining industry coefficient is a difference
+against the omitted one. A factor so defined cannot be compared with a
+market factor from any model that identifies differently.
+
+The repository's test suite checks three things about this construction, and
+they are stated here because the correctness of \eqref{eq:csreg} is load-bearing
+for the structural covariance estimator and therefore for
+Table~\ref{tab:horserace}. First, that $c^{\top}R$ vanishes numerically, to
+within $10^{-12}$. Second, that the fitted industry returns satisfy
+\eqref{eq:zerosum} in the output rather than merely by construction, to within
+$10^{-10}$. Third, that dropping a column reproduces the residuals to within
+$10^{-8}$ while producing a demonstrably different intercept, which is the
+evidence that the two approaches are not notational variants of one another.
+
+Two further checks bear on whether the identified market factor means what the
+name claims. Its weekly series correlates above 0.98 with the independently
+rebuilt cap-weighted parent index, and its annualised mean differs from that
+index's by less than three percentage points. Neither is a tight bound, and
+they are reported as sanity checks rather than as validation of the factor
+model.

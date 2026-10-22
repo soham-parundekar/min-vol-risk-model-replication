@@ -1,3 +1,77 @@
 \section{Whether the estimator matters}
 \label{sec:estimator}
-Pending.
+Section~\ref{sec:repro} put a magnitude on one specification choice. This
+section puts one on the estimation choice it is usually compared against.
+Table~\ref{tab:horserace} runs all four covariance estimators through the same
+optimiser, on the same review calendar, under the same constraint set, so the
+rows differ in $\Sig$ and in nothing else.
+
+\input{tables/horserace}
+
+The four realised volatilities span 25 basis points, from 15.49\% to 15.73\%.
+The ordering is not the one the estimators' statistical properties would
+predict: the sample covariance, singular by construction at five hundred names
+and 156 observations, delivers 15.56\%, inside the range and below the
+structural model. Tracking error against the fund tells the same story, spanning
+5.57\% to 5.83\% across the four in Table~\ref{tab:replication}.
+
+This is what \citet{dom2025beyond} report for constrained portfolios in
+general, and we read our result as a confirmation of theirs in a specific
+published constraint set rather than as a new finding.
+\citet{jagannathan2003risk} supply the reason, and it is worth stating
+precisely because it is easy to mistake for a claim that estimation does not
+matter. Binding weight constraints act as a form of shrinkage. A long-only
+constraint with a 1.5\% cap, a five per cent sector band and a ten per cent
+turnover limit removes most of the positions through which a covariance
+estimate expresses an opinion, so two estimates that disagree substantially
+about $\Sig$ can agree almost exactly about the portfolio that survives those
+bounds. The estimators are not equivalent. The feasible set is small enough
+that their differences cannot reach the result.
+
+\subsection{Reconciling a result that points the other way}
+\citet{alonso2020devil} report the opposite ordering, finding that
+optimiser-based low-volatility construction is highly sensitive to risk-model
+inputs and that small changes in those inputs produce large differences in
+sector and stock positioning and in risk exposures. Taken at face value that
+contradicts Table~\ref{tab:horserace}, and a reader is entitled to an account
+of why.
+
+The two results measure different things, and both can hold. Their sensitivity
+is in positioning; ours is in realised volatility. Table~\ref{tab:horserace}
+shows positioning differing substantially across estimators: median holdings
+run from 81 to 109, mean one-way turnover from 12.84\% to 14.07\%, and the
+number of reviews requiring a loosened bound from two to seven. The estimators
+do disagree, visibly, about which names to hold and how often to trade them.
+What the constraint set does is absorb that disagreement before it reaches
+realised risk. On the reading we prefer, their result and ours are the same
+phenomenon observed either side of a binding constraint, and the discrepancy is
+a reason to report both measures rather than to prefer one.
+
+\subsection{Calibration}
+The last column of Table~\ref{tab:horserace} that bears on the model's honesty
+is the pair of calibration measures, and they disagree in magnitude while
+agreeing in sign.
+
+The ratio of mean predicted to realised volatility runs from 0.864 to 0.897:
+every estimator predicts between ten and fourteen per cent less volatility than
+its own portfolio went on to deliver. The bias statistic, which standardises
+each period's realised return by the previous period's forecast and takes the
+standard deviation of the result, runs from 1.078 to 1.104 against a
+theoretical band of $[0.948, 1.052]$. Both say the models understate their own
+risk; they do not say it by the same amount, because they are computed over
+different windows and standardise differently, and the paper is careful to name
+which is meant wherever a figure appears.
+
+Understating risk is not a surprise in a minimum-variance portfolio and it has
+a known mechanism. \citet{goldberg2022dispersion} show that excess dispersion
+in the leading eigenvector of an estimated covariance matrix propagates through
+quadratic optimisation into the risk forecasts of the portfolios it produces,
+with the optimiser selecting precisely the directions in which the estimate is
+most overconfident. All four of our estimators sit outside the band on the same
+side, which is consistent with that account and is not evidence for it over any
+other.
+
+The practical reading is that an optimiser of this kind should not be trusted
+to forecast its own risk, whichever of these four matrices sits underneath it.
+That conclusion is unchanged across the estimator choice, which is the same
+message the realised volatilities deliver from the other direction.

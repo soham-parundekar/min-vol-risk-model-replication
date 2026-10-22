@@ -1,10 +1,12 @@
 \section{Introduction}
 \label{sec:intro}
 Two of the largest low-volatility equity funds are built on opposite
-philosophies. One tracks an index defined by a constrained quadratic programme
-over a commercial multi-factor risk model. The other tracks an index defined by
-two sentences: take the hundred least volatile members of the parent, weight
-them by the inverse of their volatility. Both publish their rules. Only one of
+philosophies. The iShares MSCI USA Min Vol Factor ETF, USMV, tracks an index
+defined by a constrained quadratic programme over a commercial multi-factor
+risk model \citep{ishares2011usmv497k}. The Invesco S\&P 500 Low Volatility
+ETF, SPLV, tracks an index defined by two sentences: take the hundred least
+volatile members of the parent, weight them by the inverse of their volatility
+\citep{invesco2024splv497k}. Both providers publish their rules. Only one of
 them publishes rules a reader can act on.
 
 That asymmetry is the subject of this paper. A rank-and-weight rule is complete
@@ -19,11 +21,12 @@ methodology document and consequential in the result.
 
 We quantify how consequential. Using a weekly factor risk model built entirely
 from free data, we rebuild both indices over the funds' own lifetimes and
-measure what each replication achieves. The heuristic index tracks at 1.62\%
-annualised tracking error with a correlation of 0.9939, which is close enough
-that the remaining difference is mostly the parent-universe proxy. The
-optimised index tracks at 5.83\%. Closing that gap is where the paper's content
-lies, and the usual suspect turns out to be the wrong one.
+measure each replica against the fund that tracks the index it targets. The
+SPLV replica achieves 1.62\% annualised tracking error with a correlation of
+0.9939, close enough that the remaining difference is mostly the
+parent-universe proxy. The USMV replica achieves 5.83\%. Closing that gap is
+where the paper's content lies, and the usual suspect turns out to be the wrong
+one.
 
 The usual suspect is the covariance matrix. If a commercial risk model is the
 thing a free-data replication cannot reproduce, then a better covariance
@@ -56,10 +59,13 @@ We also report what the constraints buy, since the comparison invites the
 question of whether the optimiser earns its complexity. On realised volatility
 it does not: over this sample the optimised replicas are more volatile than the
 heuristic one, not less. What the constraints deliver is control over where the
-risk sits. The sector band holds the largest active industry weight near five
-per cent, where the heuristic's averages 40.7\% and reaches 47.6\%, because a
-rule that ranks on volatility alone will concentrate wherever the quietest
-industry happens to be. Neither index produces a six-factor alpha significant
+risk sits. The sector band binds at every review we examine, holding the
+largest active industry weight at five per cent, while the unconstrained rule
+drifts to between 32 and 48 per cent, growing monotonically across its reviews
+as a single industry became both larger in the parent and more volatile. The
+two sets of review dates do not coincide, so this is a contrast between a
+binding constraint and its absence rather than a matched comparison; it is also
+not a close call. Neither index produces a six-factor alpha significant
 at the five per cent level, and betting-against-beta loadings between 8.7 and
 14.0 absorb what intercept there is, which is consistent with the
 leverage-constraint account of \citet{frazzini2014betting} and does not

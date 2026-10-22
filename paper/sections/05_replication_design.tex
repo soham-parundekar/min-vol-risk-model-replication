@@ -1,3 +1,69 @@
 \section{Replication design}
 \label{sec:design}
-Pending.
+
+\subsection{Solving a programme that is not quite a quadratic programme}
+Equation~\eqref{eq:qp} is not a quadratic programme. The semi-continuous
+condition, that a holding is either zero or at least five basis points, makes
+it mixed-integer, and solving it exactly over five hundred names at
+twenty-nine review dates is a different undertaking from the one the rest of
+this paper is about. We use the approximation index providers themselves
+describe: solve the continuous relaxation, drop the holdings that fall below
+the floor, re-solve on the survivors, and repeat to a cap of fifteen passes.
+The procedure terminates because each pass strictly shrinks the name set, and
+in practice it converges in far fewer passes than the cap allows.
+
+This is an approximation and we do not measure its cost. An exact mixed-integer
+solve on a handful of dates would bound the optimality gap, and
+Section~\ref{sec:limits} records its absence as a limitation rather than
+presenting the heuristic as a solution.
+
+Three timing details are reproduced from the methodology because getting them
+wrong flatters the result. The covariance matrix is dated to the end of the
+month preceding the review, not to the review date, so the May rebalance uses
+an end-of-April matrix; using the review-date matrix is a month of hindsight
+the index never had. Turnover is measured against the previous book after it
+has drifted with prices, not against the previous optimisation target, because
+the drifted book is what a manager would actually be trading away from.
+Reviews are effective on the last business day of May and November.
+
+\subsection{The relaxation ladder}
+The constraint set in \eqref{eq:qp} is not always feasible, and the provider's
+methodology prescribes what to do when it is not. The sequence is specific and
+an intuitive ordering would get it wrong in two places. Turnover loosens first,
+in five-point steps to a ceiling of thirty per cent. The minimum holding then
+walks down a basis point at a time toward one. Only after both are exhausted
+does the weight cap loosen, paired with the sector band. The style band is
+never relaxed at any stage, so a portfolio remains within 0.25 standard
+deviations of the parent on every constrained style whatever else gives way.
+And when the whole sequence fails, the index is not rebalanced on loosened
+terms; it is not rebalanced at all that review, which we reproduce by carrying
+the previous weights forward unchanged. Appendix~\ref{app:ladder} lists the
+thirteen rungs in order.
+
+The distinction between a loosened bound and an abandoned review matters for
+reading Section~\ref{sec:constraints}. A loosened bound still yields an
+optimised book that satisfies the bound in force. An abandoned review yields no
+trade, after which the carried-forward book drifts with prices and can end a
+period further outside the sector band than the optimiser would ever have
+placed it. The two are reported separately.
+
+\subsection{The heuristic rule and the evaluation}
+The heuristic index needs no such machinery. At each quarterly review we take
+the hundred parent members with the lowest trailing 252-day realised
+volatility and weight them by \eqref{eq:splv}. There is no covariance matrix
+and no constraint to be infeasible.
+
+Replicas are compared against the funds rather than against the indices,
+because fund prices are free and index levels are not. Both are evaluated on
+daily total returns, gross and net of a five basis point one-way cost applied
+to turnover at each rebalance, and we report both.
+
+The two replicas cannot begin on the same day, and the reason is itself part of
+the answer. The heuristic needs one trailing volatility number per stock, so it
+can be run from its first quarterly review after the fund launched in May 2011.
+The optimiser needs a fitted factor covariance, which needs 104 weeks of weekly
+factor returns, which given a January 2010 exposure start puts its first
+replicated review in May 2012. A heuristic can be run the week it is described;
+an optimiser cannot. Every table reports each replica from its own first
+review and again over the window common to both, so no comparison between them
+rests on their covering different periods.

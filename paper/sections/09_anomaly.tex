@@ -1,3 +1,49 @@
 \section{Is low volatility an anomaly here?}
 \label{sec:anomaly}
-Pending.
+The low-volatility effect has been documented for decades, from
+\citet{haugen1991efficient} through \citet{ang2006crosssection} and
+\citet{blitz2007volatility}, and two accounts compete for it. One is a
+leverage-constraint story: investors who want more market exposure than they
+can borrow to obtain bid up high-beta stocks instead, leaving low-beta stocks
+cheap \citep{frazzini2014betting}. The other is a benchmarking story: managers
+judged against a capitalisation-weighted index treat low-beta positions as
+risky in the only sense that matters to them, which deters the arbitrage that
+would close the gap \citep{baker2011benchmarks}. Both predict that
+low-volatility portfolios earn more than their market risk justifies, and they
+differ in why.
+
+Neither question is what a replication study is equipped to settle. What it can
+do is ask whether the portfolios it built, and the funds they track, show
+returns a standard factor model does not already account for.
+Table~\ref{tab:alpha} reports six-factor intercepts, then the same regressions
+with the betting-against-beta factor added.
+
+\input{tables/alpha}
+
+No intercept in either block reaches significance at the five per cent level.
+The nearest is the heuristic fund's own, at $t=-1.95$ and $p=0.051$ once
+betting-against-beta is included, and it is negative. Every
+betting-against-beta loading is significant by a wide margin, with $t$ between
+8.7 and 14.0 across every portfolio tested, and adding the factor moves each
+intercept downward: the heuristic fund's annualised alpha falls from $-1.19\%$
+to $-3.35\%$, the optimised fund's from $-0.17\%$ to $-1.96\%$.
+
+Read carefully, this says something narrower than "the low-volatility anomaly
+is explained". It says that over 2011 to 2026, in daily US large-cap data,
+these particular portfolios earned no return that the five Fama--French factors
+plus momentum fail to account for, and that their exposure to a
+betting-against-beta portfolio is large and precisely estimated. A loading is
+not a mechanism. The result is consistent with the leverage-constraint account
+and it does not distinguish that account from the benchmarking one, because
+both predict exactly this exposure; separating them requires evidence on
+investor behaviour and constraint bindingness that daily return regressions
+cannot supply.
+
+Two further boundaries. The regressions end earlier than the portfolio results
+because the factor vintages do, at 2026-08-31 for the six-factor block and
+2026-07-31 once betting-against-beta is included, so the two blocks are not a
+paired test on an identical sample and the table says so. And an intercept that
+is not statistically distinguishable from zero is not an intercept shown to be
+zero; with fifteen years of daily data the standard errors here are small, but
+the finding is an absence of detected alpha, not a demonstration of its
+absence.

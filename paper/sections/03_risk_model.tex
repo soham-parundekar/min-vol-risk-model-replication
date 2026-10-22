@@ -1,3 +1,134 @@
 \section{A factor risk model from public data}
 \label{sec:model}
-Pending.
+Replicating \eqref{eq:qp} requires a $\Sig$. This section builds one in the
+conventional multi-factor idiom, from descriptors a reader can compute from
+free sources, and then builds three alternatives to it so that
+Section~\ref{sec:estimator} can ask whether the choice matters. Everything is
+weekly: exposures are measured on Fridays, factor returns span Friday to
+Friday, and the last available trading day substitutes when a Friday is a
+holiday.
+
+\subsection{Exposures}
+Six style descriptors are computed for every name in the weekly cross-section:
+the logarithm of market capitalisation; the beta of daily excess returns to the
+cap-weighted parent over a trailing 252 days, shrunk toward one; the standard
+deviation of the residual from that same regression; the cumulative return over
+252 days skipping the most recent 21, which is the usual construction that
+avoids one-month reversal; book equity over market capitalisation, with book
+equity taken point-in-time as Section~\ref{sec:data} describes; and the
+logarithm of average daily dollar volume over a trailing 63 days.
+
+Beta is shrunk following \citet{blume1971assessment},
+\begin{equation}
+ \hat\beta_i^{\,\rm shrunk} = 0.67\,\hat\beta_i^{\,\rm raw} + 0.33,
+ \label{eq:blume}
+\end{equation}
+with coefficients summing to one so the parent portfolio retains a beta of one.
+The weights themselves follow the convention in the project's design
+specification rather than a value estimated here.
+
+Each raw descriptor is winsorised at its 1st and 99th cross-sectional
+percentiles and then standardised twice over, to a capitalisation-weighted mean
+of zero and an equal-weighted standard deviation of one:
+\begin{equation}
+ X_{ik} = \frac{d_{ik} - \sum_j b_j d_{jk}}
+               {\operatorname{sd}_{\rm ew}\!\left(d_{\cdot k} -
+                \textstyle\sum_j b_j d_{jk}\right)}.
+ \label{eq:standardise}
+\end{equation}
+The asymmetry is deliberate and it is not cosmetic. Centring on the
+cap-weighted mean makes the parent index's exposure exactly zero on every
+style, which is what allows the $\pm0.25$ band in \eqref{eq:qp} to be read as a
+deviation from the parent rather than from an arbitrary origin. Scaling by the
+equal-weighted standard deviation keeps the unit of that band from being
+dictated by the largest few names. A band stated in standard deviations is only
+as meaningful as the standardisation underneath it, so a replication that
+standardises differently from the provider is applying a different constraint
+while appearing to apply the same one.
+
+Standardisation uses only the names in that week's cross-section. Standardising
+across the pooled history would let later information set the scale for earlier
+weeks, which is look-ahead through a side door.
+
+\subsection{Factor returns and an identification problem}
+Weekly factor returns come from a cross-sectional regression of returns on the
+exposures known at the start of the week,
+\begin{equation}
+ r_{i,t} = f^{\rm mkt}_t
+         + \sum_j \Xind_{ij,t-1} f^{\rm ind}_{j,t}
+         + \sum_k \Xsty_{ik,t-1} f^{\rm sty}_{k,t}
+         + u_{i,t},
+ \label{eq:csreg}
+\end{equation}
+fitted by weighted least squares with weights proportional to $\sqrt{b_i}$. The
+square root is the Barra convention and sits between two bad alternatives: a
+cap-weighted fit is effectively a regression on thirty mega caps, an
+equal-weighted fit hands the estimate to the noisiest small names. Exposures
+are dated $t-1$ and returns span $t-1$ to $t$. Several descriptors are built
+from trailing returns, so fitting contemporaneous exposures would let the
+regression explain part of the return with itself.
+
+Equation~\eqref{eq:csreg} is rank deficient as written. Industry membership is
+exhaustive and exclusive, so the industry dummies sum to the intercept for
+every row and the market factor is not separately identified. The textbook
+remedy is to drop one industry column, and it works numerically while quietly
+changing what every coefficient means: the intercept stops being the market
+return and becomes the omitted industry's return, and each remaining industry
+coefficient becomes a difference against it. A market factor defined that way
+is not comparable with anything built the conventional way.
+
+We impose instead the economically meaningful side condition that cap-weighted
+industry returns sum to zero,
+\begin{equation}
+ \sum_j c_{j,t}\, f^{\rm ind}_{j,t} = 0,
+ \qquad c_{j,t} = \text{industry } j\text{'s share of total capitalisation},
+ \label{eq:zerosum}
+\end{equation}
+by reparametrising rather than by deleting. Writing $f^{\rm ind} = Rg$ with $R$
+chosen so that $c^{\top}R = 0$, fitting the unconstrained regression in $g$ and
+mapping back leaves the intercept as the cap-weighted market return and each
+industry return as a deviation from it. Appendix~\ref{app:identification} gives
+$R$ and shows that the two approaches produce different market factors rather
+than the same one in different clothing. Industries holding fewer than five
+names in a given week are merged into the catch-all for that week, since an
+industry return estimated from three stocks is an average of three stocks.
+
+\subsection{Four covariance estimators}
+The structural estimator assembles
+\begin{equation}
+ \Sig_t = X_{t}\,F_{t}\,X_{t}^{\top} + \Delta_{t},
+ \label{eq:structural}
+\end{equation}
+with $F$ the factor covariance and $\Delta$ diagonal. $F$ is estimated by
+exponentially weighted moving average with separate half-lives for volatilities
+and correlations, 17 weeks and 50 weeks respectively, over a 260-week window.
+Volatilities get the shorter memory because they move with regime and have to
+react; correlations are more stable and a longer window buys precision at
+little cost in staleness. Specific variances use a 26-week half-life and are
+shrunk 30\% toward the mean specific variance of the stock's
+capitalisation decile, which stops a newly listed or thinly traded name
+contributing an estimation artefact the optimiser would happily exploit.
+
+Three alternatives run on the same weekly returns over a common 156-week
+window, so the comparison is like with like. The sample covariance is the
+baseline, and with roughly five hundred names and 156 observations it is
+singular by construction; that is not a defect in the baseline so much as the
+baseline's defining problem, and Section~\ref{sec:estimator} reports what it
+does anyway. Constant-correlation shrinkage follows
+\citet{ledoit2003improved} and \citet{ledoit2004honey}, shrinking toward a
+target in which every pairwise correlation equals the cross-sectional average,
+with the intensity computed analytically rather than tuned. It is worth
+stating which estimator this is: the shrinkage most libraries supply under the
+Ledoit--Wolf name targets scaled identity, a different estimator from a
+different paper, and the two are routinely conflated. The fourth extracts
+principal components of the return covariance and retains $k$ of them, with $k$
+chosen by the \citet{bai2002determining} ICp2 criterion over a search bounded
+at twenty rather than fixed at a round number chosen after seeing results.
+
+The four span the trade-off \citet{briner2008howmuch} describe between
+estimation variance and specification error: the sample matrix imposes no
+structure and pays in variance, the structural model imposes a great deal and
+pays in specification error, and shrinkage and principal components sit between
+them by different routes. Whether that trade-off survives contact with a
+binding constraint set is the question Section~\ref{sec:estimator} puts to
+them.

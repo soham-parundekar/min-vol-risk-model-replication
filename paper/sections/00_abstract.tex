@@ -2,13 +2,14 @@
 % difference E04, the estimator spread E10, the BAB range E18, active sector
 % E19a/E19b. Precision follows the ledger and must not be adjusted here.
 \begin{abstract}
-A published index methodology is not a complete specification. We rebuild two
-low-volatility equity indices from free public data, one defined by a
-constrained optimiser over a commercial factor risk model and one by a rank and
-inverse-volatility rule, and ask how much of each is recoverable. The
-transparent rule is almost fully recoverable: it tracks its fund at 1.62\%
+A published index methodology is not a complete specification. We rebuild the
+MSCI USA Minimum Volatility Index and the S\&P 500 Low Volatility Index from
+free public data, the first defined by a constrained optimiser over a
+commercial factor risk model and the second by a rank and inverse-volatility
+rule, and ask how much of each is recoverable. The transparent rule is almost
+fully recoverable: our replica tracks SPLV, the fund on that index, at 1.62\%
 annualised tracking error with a correlation of 0.9939. The optimiser is not,
-at 5.83\%. The residual is not covariance estimation. Four estimators spanning
+tracking USMV at 5.83\%. The residual is not covariance estimation. Four estimators spanning
 a sample matrix, a two-half-life structural model, constant-correlation
 shrinkage and a Bai--Ng-selected principal-component model produce realised
 volatilities 25 basis points apart under an identical constraint set, which is
@@ -22,8 +23,9 @@ and exempting both brings tracking error to 3.73\%, replica volatility to
 evidence the specification choice is worth roughly an order of magnitude more
 than the estimator choice, for this index pair over this sample; we do not
 establish that ordering in general. What the constraints deliver is control
-rather than lower realised risk, holding the largest active industry weight
-near its five per cent band where the heuristic averages 40.7\%. No portfolio
+rather than lower realised risk: the sector band binds at every review we
+examine, holding the largest active industry weight at five per cent, while
+the unconstrained rule drifts to between 32 and 48 per cent. No portfolio
 shows a six-factor alpha significant at the five per cent level, and
 betting-against-beta loadings between 8.7 and 14.0 absorb what intercept there
 is.

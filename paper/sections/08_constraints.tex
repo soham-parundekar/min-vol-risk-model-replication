@@ -1,3 +1,81 @@
 \section{What the constraints buy}
 \label{sec:constraints}
-Pending.
+Over this sample the optimised replicas are more volatile than the heuristic
+one, not less: 15.49\% to 15.73\% against 14.06\%. The programme in
+\eqref{eq:qp} solves for minimum predicted variance at every review and still
+ends the period with more realised variance than a rule that sorts on trailing
+volatility and divides. That is worth stating plainly before asking what the
+constraints are for, because the obvious justification for the extra machinery
+is not available.
+
+What the constraints deliver is not less risk but control over where it sits.
+The two designs concentrate in opposite places, and the contrast is sharp
+enough to survive the measurement caveat that follows it.
+
+\subsection{Industry exposure}
+The sector band binds. Across the reviews examined, the optimised replica's
+largest active industry weight sits at the five per cent bound at every date,
+ranging from $+5.02\%$ to $-5.12\%$ as the binding industry changes from
+consumer non-durables to manufacturing. That is a statement about a constraint
+doing its job rather than an empirical discovery: the band is five per cent and
+the optimiser spends it.
+
+The heuristic has no such bound and the result is not subtle. Its largest
+active industry weight is an underweight to business equipment, and it grows
+monotonically across the six reviews examined, from $-31.97\%$ to $-47.62\%$.
+By the last review the index is running close to a fifty-point underweight to a
+single industry, not by decision but as the arithmetic consequence of ranking
+on volatility during a period when one large industry was persistently the
+most volatile. A rule that sorts on volatility alone will concentrate wherever
+the quietest industries happen to be, and it will keep concentrating for as
+long as that persists.
+
+Two qualifications. The reviews available for this comparison are the six most
+recent for each portfolio, and because the optimised index reviews
+semi-annually while the heuristic reviews quarterly, those six span 2023-11 to
+2026-05 for one and 2025-05 to 2026-08 for the other. The windows do not
+overlap, so this is a contrast between a binding constraint and its absence,
+not a matched comparison over common dates. Second, the optimised figure
+reaches $5.12\%$ rather than exactly $5.00\%$ at two reviews. The sector band
+was never the bound the relaxation ladder loosened, so this is not a logged
+relaxation; it is the residual of the drop-and-resolve pass described in
+Section~\ref{sec:design}, where removing sub-floor holdings can leave the
+remaining names unable to satisfy the band exactly. Twelve basis points on a
+five hundred basis point bound does not change the comparison with a
+four-thousand basis point drift, but it is a consequence of the heuristic
+floor and belongs in Section~\ref{sec:limits} rather than hidden in a rounding.
+
+\subsection{Stock-level concentration runs the other way}
+The optimiser is the more concentrated portfolio at the level of individual
+holdings. It holds between 74 and 88 names on average depending on the
+estimator, with a largest position near 2.0\% to 2.8\% and an effective number
+of holdings between 61 and 68. The heuristic holds exactly 100 by construction,
+with a largest position of 1.29\% and an effective number of 98.7, which is
+close to equal weighting because inverse-volatility weights across a
+pre-filtered low-volatility set do not vary much.
+
+So the two designs are each concentrated, in different dimensions, and a
+single-number comparison of concentration would mislead in whichever direction
+it was taken. The optimiser accepts stock-level concentration in exchange for
+industry-level diversification; the heuristic accepts the reverse without
+having chosen to. The difference is that one of them is the product of stated
+bounds a reader can inspect, and the other is an emergent property of a sorting
+rule that mentions neither industries nor position sizes.
+
+\subsection{What binds}
+Table~\ref{tab:horserace} records which bound actually constrained the
+programme. Across 29 reviews the structural specification required a loosened
+bound twice; the other estimators between five and seven times. In nearly every
+case the bound that had to give was the turnover cap, not the sector band, the
+weight cap or the minimum holding. Turnover is the binding constraint in this
+replication, and the sector and style bands, which receive most of the
+attention in descriptions of how such indices are built, are rarely the
+operative limit.
+
+Two reviews, one under the sample estimator and one under the beta-exempt
+variant, exhausted the ladder entirely. Following the methodology, those
+reviews produce no trade at all and the previous weights are carried forward,
+after which the book drifts with prices. That is the mechanism behind the
+largest observed active sector weight in the study, 5.39\% under the sample
+estimator, and it is a faithful reproduction of what the published rules
+prescribe rather than a failure of the replication.

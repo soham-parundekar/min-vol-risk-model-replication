@@ -1,3 +1,66 @@
 \section{How much is reproducible}
 \label{sec:repro}
-Pending.
+Table~\ref{tab:replication} reports each replica against the fund it targets.
+
+\input{tables/replication}
+
+The heuristic replicates almost exactly. At 1.62\% annualised tracking error
+and a correlation of 0.9939, the SPLV replica is doing what the fund does, and
+the residual difference is attributable to the parent-universe proxy, the
+rebalance-date approximation and trading frictions rather than to anything
+about the rule. A replicator who reads the two sentences in the prospectus and
+implements them has the index. This is the control case in the paper, and its
+purpose is to establish that the pipeline around it works: the data, the
+membership panel, the corporate-action handling and the evaluation machinery
+are common to both replications, so a 1.62\% result on the simple rule bounds
+how much of the harder rule's error can be blamed on infrastructure.
+
+The optimised replication is a different matter. The structural specification
+reaches 5.83\%, with a correlation of 0.9320 and, more tellingly, a beta to the
+fund of 1.090 and a realised volatility of 15.73\% against the fund's 13.45\%.
+The replica is not merely different from USMV; it is systematically riskier
+than it. Something in the specification is permitting exposure the real index
+does not take.
+
+\subsection{The exemption, read two ways}
+Section~\ref{sec:rules} identified one constraint the published document does
+not pin down: which factor or factors the style exemption covers. The base
+specification takes the literal reading and frees residual volatility alone,
+leaving beta constrained inside the $\pm0.25$ band like every other style. The
+variant frees beta as well.
+
+The last row of Table~\ref{tab:replication} is that variant. Tracking error
+falls from 5.83\% to 3.73\%, a reduction of 2.10 percentage points. Correlation
+rises from 0.9320 to 0.9637. Realised volatility falls from 15.73\% to 13.97\%
+against the fund's 13.45\%, and the beta to the fund moves from 1.090 to 1.001.
+
+That last number is the one worth pausing on. A beta of 1.001 to the fund is
+not a marginal improvement in fit; it means the variant replica and USMV are,
+to a first approximation, taking the same amount of market risk, which the base
+specification was not.
+
+The mechanism is visible in the realised tilts, and it is not the one a reader
+might expect. Under the base specification the median active beta across the
+twenty-nine reviews is $-0.248$ against a band of $0.25$, with a minimum of
+$-0.250$: beta is pinned against its bound at essentially every rebalance. The
+optimiser wants more negative beta than it is allowed. Freeing the bound sends
+the median active beta to $-0.718$, with a minimum of $-0.950$.
+
+What does not happen is as informative. Residual volatility, the style the base
+case already exempts, does not become a larger tilt once beta is freed; its
+median moves from $-0.209$ to $-0.176$, slightly closer to the parent. The
+optimiser is not being released to take more of the exposure it already had.
+It is substituting one route to low volatility for a more direct one, and the
+base specification had closed that route. A minimum-variance programme held to
+the parent's beta is being denied the most direct means of reducing variance
+there is, and it compensates with an exposure that does the job less
+efficiently, which is why the base replica ends up both further from the fund
+and more volatile than it.
+
+We are not claiming the variant is the correct reading of the methodology. The
+published document says what it says, and a replicator reading it literally
+would implement the base case. The claim is narrower and, we think, more
+useful: a single unresolved noun phrase in a constraint document is worth 2.10
+percentage points of tracking error, and a reader of that document has no way
+to tell which reading the index uses. Section~\ref{sec:estimator} puts that
+magnitude in context by asking what the covariance estimator is worth.

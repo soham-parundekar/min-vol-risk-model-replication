@@ -1,3 +1,93 @@
 \section{Data, and what free data costs}
 \label{sec:data}
-Pending.
+Every input is free. Daily prices, dividends, splits and volume come from a
+public quotation service; point-in-time book equity and shares outstanding from
+the SEC's XBRL company-facts interface; industry codes from the same
+registrant's EDGAR submissions, mapped to twelve Fama--French groupings;
+attribution factors from the Fama/French Data Library and AQR's public
+betting-against-beta series; and point-in-time index membership from a public
+repository whose commit hash the acquisition script records so a run is
+reproducible against a vintage \citep{secedgarapi,frenchdatalibrary,aqrbab}.
+Prices begin in 2008 so that a 252-day beta and a 12-1 momentum signal have
+history before the first exposure date. Exposures begin in January 2010.
+
+That start date is a data decision rather than a modelling one. Mandatory XBRL
+tagging phased in across filers between 2009 and 2011 \citep{secedgarapi}, so
+point-in-time share counts are substantially incomplete for index members
+before 2010. Because the parent index is rebuilt from those share counts and
+every beta in the study is measured against that parent, incomplete coverage
+degrades not one input but the benchmark the whole model is estimated against.
+Beginning in 2010 costs six months of sample and removes a stretch in which the
+benchmark itself is unreliable.
+
+\subsection{Point-in-time discipline}
+Fundamentals are keyed on the date a fact was \emph{filed}, never on the fiscal
+period it describes. The distinction is the difference between a book-to-price
+ratio an investor could have computed and one that incorporates a filing made
+weeks later. XBRL reports both dates, which makes the correct behaviour
+available and the incorrect behaviour easy, and a test asserts that every value
+the pipeline returns for a date traces to a fact filed on or before it.
+
+\subsection{Three ways free data misleads}
+Each of the following produces results that look clean. None announces itself.
+
+\textbf{Survivorship.} The quotation service keeps almost nothing for companies
+that were acquired or went through bankruptcy. Of 899 tickers that passed
+through the index over the sample, 242 return no usable history at all. The
+consequence is not that the sample is smaller but that it is biased in a known
+direction: a parent index rebuilt from the survivors outperforms the one that
+actually existed. We measure the bias rather than assert it, by rebuilding the
+cap-weighted parent and comparing it against the market ETF over the same days.
+The rebuilt parent compounds at 14.78\% against 14.21\%, a gap of 0.51
+percentage points a year, at 1.50\% tracking error and a correlation of 0.9962.
+The gap is widest in 2020 at 2.54 points and 2025 at 2.35, which is the
+expected pattern: bankruptcies cluster, so the survivorship advantage is
+concentrated in the years where the missing names did worst.
+
+\textbf{Ticker reuse.} A symbol released by a delisting is reassigned years
+later to an unrelated company, and the service returns the new company's
+history under the old symbol without comment. Requesting one such symbol
+returns a company that listed in 2025, although the index member of that name
+left in 2008. Joined naively, a recent listing's returns are stitched onto a
+constituent that no longer exists. The defence is to intersect every price
+series with the window in which that symbol was genuinely an index member and
+to treat a series whose history begins after membership ended as a different
+company. Thirty-three symbols are caught this way, among them several that a
+reader would recognise. Three more are dropped for having too few observations
+inside their membership window to support anything.
+
+\textbf{Filer errors served through unchanged.} Registrants occasionally tag a
+share count with the wrong magnitude, and EDGAR passes the error along. One
+filer reported $3.670\times10^{14}$ shares in a filing of October 2016 against
+a contemporaneous count near $3.47\times10^{8}$, an error of six orders of
+magnitude; another reported $1.981\times10^{11}$ later the same month against
+a count near $1.93\times10^{8}$. Left alone, a single such fact gives one stock
+a market capitalisation larger than world output, and since the parent is
+cap-weighted, the parent becomes that stock.
+
+The two cases need different defences, which is why both exist. The first is
+isolated, and is caught by comparing each share fact against a rolling median
+of its neighbours on a split-adjusted basis, the split adjustment being what
+keeps a genuine split from tripping the filter. The second repeats across
+consecutive filings, so its own neighbours agree with it and the rolling median
+passes it through; it is caught instead by a cross-sectional check against the
+median capitalisation of that week's index. A filter that handles only the
+first kind would leave the second in place and look like it had worked.
+
+A fourth trap is specific to adjusted price series. The quotation service
+back-adjusts the close for splits, so multiplying a historical share count from
+a filing by a historical adjusted close understates capitalisation by the
+cumulative split factor. The share count is as-reported and the price is
+as-adjusted, and the two live in different units. We reconstruct the split
+history separately and convert reported share counts into current units before
+they meet a price.
+
+\subsection{What remains wrong}
+The parent universe is a proxy. The optimised index is defined over its
+provider's broad investable-market parent of roughly 2{,}500 names; we use the
+500-name index. This is the single largest known contributor to the optimised
+replication error and no amount of care elsewhere repairs it. Industries are
+SIC-derived and therefore coarser and older than the classification the
+provider uses, and EDGAR publishes one current code per registrant rather than
+a history, so a company that changed business carries its present code
+backwards. Section~\ref{sec:limits} returns to both.
